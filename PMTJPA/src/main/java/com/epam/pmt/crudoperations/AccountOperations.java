@@ -75,9 +75,6 @@ public class AccountOperations {
 				.filter(i -> i.getGroupName().equals(groupName)).collect(Collectors.toList());
 
 		try {
-			accounts.stream().forEach(i -> System.out.println("URL : " + i.getUrl() + ", GroupName : "
-					+ i.getGroupName() + ", Username : " + i.getUserName() + ", Password : " + i.getPassword()));
-
 			Query query = manager.createQuery("select u from Account u where u.groupName=?1");
 			query.setParameter(1, groupName);
 			groupAccounts = query.getResultList();
@@ -133,14 +130,17 @@ public class AccountOperations {
 		Query query = manager.createQuery("select a from Account a where a.url=?1 and a.master=?2");
 		query.setParameter(1, url);
 		query.setParameter(2, master);
-		
+		List<Account> accounts = query.getResultList();
 		try {
-			List<Account> accounts = query.getResultList();
-			accounts.stream().forEach(i->i.setUserName(newUserName));
-			manager.getTransaction().begin();
-			manager.merge(master);
-			manager.getTransaction().commit();
-			status = true;
+			
+			if(!accounts.isEmpty()) {
+				accounts.stream().forEach(i -> i.setUserName(newUserName));
+				master.setAccounts(accounts);
+				manager.getTransaction().begin();
+				manager.merge(master);
+				manager.getTransaction().commit();
+				status = true;
+				}
 		} catch (Exception e) {
 			if (manager != null) {
 				manager.getTransaction().rollback();
@@ -163,14 +163,17 @@ public class AccountOperations {
 		Query query = manager.createQuery("select a from Account a where a.url=?1 and a.master=?2");
 		query.setParameter(1, url);
 		query.setParameter(2, master);
-		
+		List<Account> accounts = query.getResultList();
 		try {
-			List<Account> accounts = query.getResultList();
-			accounts.forEach(i->i.setPassword(newPassword));
-			manager.getTransaction().begin();
-			manager.merge(master);
-			manager.getTransaction().commit();
-			status = true;
+			
+			if(!accounts.isEmpty()) {
+				accounts.stream().forEach(i -> i.setPassword(newPassword));
+				master.setAccounts(accounts);
+				manager.getTransaction().begin();
+				manager.merge(master);
+				manager.getTransaction().commit();
+				status = true;
+				}
 		} catch (Exception e) {
 			if (manager != null) {
 				manager.getTransaction().rollback();
@@ -206,7 +209,7 @@ public class AccountOperations {
 		query.setParameter(1, groupName);
 		query.setParameter(2, master);
 		List<Account> accounts = query.getResultList();
-		if (accounts.size() > 0) {
+		if (!accounts.isEmpty()) {
 			status = true;
 		}
 		return status;
@@ -224,11 +227,14 @@ public class AccountOperations {
 		List<Account> accounts = query.getResultList();
 
 		try {
-			accounts.forEach(i -> i.setGroupName(newGroupName));
+			if(!accounts.isEmpty()) {
+			accounts.stream().forEach(i -> i.setGroupName(newGroupName));
+			master.setAccounts(accounts);
 			manager.getTransaction().begin();
 			manager.merge(master);
 			manager.getTransaction().commit();
 			status = true;
+			}
 		} catch (IllegalStateException e) {
 			if (manager != null) {
 				manager.getTransaction().rollback();
@@ -252,7 +258,7 @@ public class AccountOperations {
 		query.setParameter(2, master);
 		List<Account> accounts = query.getResultList();
 		try {
-			if (accounts.size() > 0) {
+			if (!accounts.isEmpty()) {
 				for (int i = 0; i < accounts.size(); i++) {
 					manager.getTransaction().begin();
 					manager.remove(accounts.get(i));
