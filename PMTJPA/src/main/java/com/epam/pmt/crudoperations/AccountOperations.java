@@ -137,7 +137,7 @@ public class AccountOperations {
 		query.setParameter(2, master);
 		List<Account> accounts=query.getResultList();
 		try {
-			accounts.stream().forEach(i->i.setUserName(newUserName));
+			accounts.get(0).setUserName(newUserName);
 			manager.getTransaction().begin();
 			manager.merge(master);
 			manager.getTransaction().commit();			
@@ -167,7 +167,7 @@ public class AccountOperations {
 		query.setParameter(2, master);
 		List<Account> accounts=query.getResultList();
 		try {
-			accounts.stream().forEach(i->i.setPassword(newPassword));
+			accounts.get(0).setPassword(newPassword);
 			manager.getTransaction().begin();
 			manager.merge(master);
 			manager.getTransaction().commit();			
@@ -225,7 +225,7 @@ public class AccountOperations {
 		
 		
 		try {
-			accounts.stream().forEach(i->i.setGroupName(newGroupName));
+			accounts.forEach(i->i.setGroupName(newGroupName));
 			manager.getTransaction().begin();
 			manager.merge(master);
 			manager.getTransaction().commit();			
