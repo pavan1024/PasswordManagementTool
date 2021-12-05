@@ -5,7 +5,6 @@ import java.util.Scanner;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.epam.pmt.business.AccountList;
 import com.epam.pmt.business.ReadPassword;
 import com.epam.pmt.entities.Account;
 import com.epam.pmt.ui.ReadPasswordUI;
@@ -18,18 +17,14 @@ public class ReadPasswordUI {
 	public static void displayAccountDetails() {
 		@SuppressWarnings("resource")
 		Scanner input = new Scanner(System.in);
-		if (AccountList.isEmpty()) {
-			LOGGER.info("Empty List");
-		} else {
-			LOGGER.info("Enter the URL ");
-			String url = input.nextLine();
-			displayAccounts(url);
-		}
+		LOGGER.info("Enter the URL ");
+		String url = input.nextLine();
+		displayAccounts(url);
 	}
 
 	private static void displayAccounts(String url) {
 		try {
-			if(!ReadPassword.readPassword(url).equals(""))
+			if (!ReadPassword.readPassword(url).equals(""))
 				LOGGER.info("Account Password : " + ReadPassword.readPassword(url));
 			else
 				LOGGER.info("URL not found");

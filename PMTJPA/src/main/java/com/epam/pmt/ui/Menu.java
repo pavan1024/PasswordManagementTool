@@ -29,23 +29,23 @@ public class Menu {
 			LOGGER.info("7) Delete Group ");
 			LOGGER.info("Enter 0 to exit ");
 			try {
-			choice = input.nextInt();
-			}
-			catch(InputMismatchException e){
-				//LOGGER.error("InputMismatchException");
-				LOGGER.info("Enter the Numbers from 1 to 7 \n"+ "");
+				choice = input.nextInt();
+			} catch (InputMismatchException e) {
+				// LOGGER.error("InputMismatchException");
+				LOGGER.info("Enter the Numbers from 1 to 7 \n" + "");
 				Menu.operations();
 				break;
 			}
 			TaskFactory taskFactory = new TaskFactory();
 			Task task = taskFactory.createTask(choice);
-			Optional<Task> optional=Optional.ofNullable(task);
+			Optional<Task> optional = Optional.ofNullable(task);
 			try {
 				optional.get().doTask();
-			} catch (NoSuchElementException e ) {
-				if(choice!=0)
+			} catch (NoSuchElementException e) {
+				if (choice != 0)
 					LOGGER.info("Enter the Right choice  \n");
-			}LOGGER.info("");
+			}
+			LOGGER.info("");
 		} while (choice != 0);
 
 	}

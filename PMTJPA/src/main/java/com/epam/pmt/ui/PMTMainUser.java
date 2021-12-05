@@ -5,8 +5,6 @@ import java.util.Scanner;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-
-
 public class PMTMainUser {
 	private static final Logger LOGGER = LogManager.getLogger(PMTMainUser.class);
 
@@ -21,9 +19,8 @@ public class PMTMainUser {
 			LOGGER.info("Enter 0 to exit");
 			choice = input.nextLine();
 			try {
-			userschoice(choice);
-			}
-			catch(IndexOutOfBoundsException e) {
+				userschoice(choice);
+			} catch (IndexOutOfBoundsException e) {
 				LOGGER.info("Register an Account Before Login");
 			}
 		} while (!choice.equals("0"));

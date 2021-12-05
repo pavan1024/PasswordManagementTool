@@ -5,7 +5,6 @@ import java.util.Scanner;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.epam.pmt.business.AccountList;
 import com.epam.pmt.business.UpdateAccount;
 import com.epam.pmt.ui.UpdateAccountUI;
 
@@ -16,17 +15,13 @@ public class UpdateAccountUI {
 
 	public static void updateAccountDetails() {
 		// checks whether the list is empty or not
-		if (AccountList.isEmpty()) {
-			LOGGER.warn("Empty List");
-		} else {
-			LOGGER.info("Enter your choice");
-			LOGGER.info("1)update username");
-			LOGGER.info("2)update password");
-			String choice = input.nextLine();
-			LOGGER.info("Enter url  ");
-			String url = input.nextLine();
-			usersChoice(choice, url);
-		}
+		LOGGER.info("Enter your choice");
+		LOGGER.info("1)update username");
+		LOGGER.info("2)update password");
+		String choice = input.nextLine();
+		LOGGER.info("Enter url  ");
+		String url = input.nextLine();
+		usersChoice(choice, url);
 	}
 
 	private static void usersChoice(String choice, String url) {
