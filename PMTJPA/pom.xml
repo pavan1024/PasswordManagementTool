@@ -32,6 +32,21 @@
 	    <version>5.8.1</version>
 	    <scope>test</scope>
 	</dependency>
+	<!-- https://mvnrepository.com/artifact/org.mockito/mockito-inline -->
+	<dependency>
+	    <groupId>org.mockito</groupId>
+	    <artifactId>mockito-inline</artifactId>
+	    <version>4.0.0</version>
+	    <scope>test</scope>
+	</dependency>
+		<!-- https://mvnrepository.com/artifact/org.mockito/mockito-junit-jupiter -->
+	<dependency>
+	    <groupId>org.mockito</groupId>
+	    <artifactId>mockito-junit-jupiter</artifactId>
+	    <version>4.0.0</version>
+	    <scope>test</scope>
+	</dependency>
+	
     
     <dependency>
 	    <groupId>org.apache.logging.log4j</groupId>

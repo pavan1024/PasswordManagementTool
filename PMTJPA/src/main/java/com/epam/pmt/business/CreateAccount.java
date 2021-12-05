@@ -1,6 +1,6 @@
 package com.epam.pmt.business;
 
-import com.epam.pmt.crudoperations.AccountOperations;
+import com.epam.pmt.dao.AccountOperations;
 import com.epam.pmt.entities.Account;
 
 public class CreateAccount {

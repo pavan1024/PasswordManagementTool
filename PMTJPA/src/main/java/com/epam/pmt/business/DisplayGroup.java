@@ -2,7 +2,7 @@ package com.epam.pmt.business;
 
 import java.util.List;
 
-import com.epam.pmt.crudoperations.AccountOperations;
+import com.epam.pmt.dao.AccountOperations;
 import com.epam.pmt.entities.Account;
 
 public class DisplayGroup {

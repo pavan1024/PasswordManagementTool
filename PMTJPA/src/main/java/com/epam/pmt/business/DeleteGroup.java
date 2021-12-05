@@ -1,6 +1,6 @@
 package com.epam.pmt.business;
 
-import com.epam.pmt.crudoperations.AccountOperations;
+import com.epam.pmt.dao.AccountOperations;
 
 public class DeleteGroup {
 

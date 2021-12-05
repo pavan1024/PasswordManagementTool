@@ -1,6 +1,5 @@
-package com.epam.pmt.crudoperations;
+package com.epam.pmt.dao;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,7 +9,6 @@ import javax.persistence.Query;
 import javax.transaction.Transactional;
 
 import com.epam.pmt.db.MasterProvider;
-import com.epam.pmt.db.SingletonEntityManager;
 import com.epam.pmt.db.SingletonEntityManagerFactory;
 import com.epam.pmt.entities.*;
 
