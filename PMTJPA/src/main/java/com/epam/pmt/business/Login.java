@@ -3,8 +3,8 @@ package com.epam.pmt.business;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
+import com.epam.pmt.crudoperations.MasterOperations;
 import com.epam.pmt.db.MasterProvider;
-import com.epam.pmt.db.SingletonEntityManager;
 import com.epam.pmt.db.SingletonEntityManagerFactory;
 import com.epam.pmt.entities.Master;
 
@@ -22,13 +22,7 @@ public class Login {
 		return found;
 	}
 	public static boolean checkIfUserNameExists(String userName) {
-		boolean found = false;
-		factory=SingletonEntityManagerFactory.getEntityManagerFactory();
-		manager=factory.createEntityManager();
-		if (userName.equals(manager.find(Master.class, userName).getUsername())) {
-			found=true;
-		}
-		return found;
+		return MasterOperations.checkIfMasterExists(userName);
 	}
 
 }

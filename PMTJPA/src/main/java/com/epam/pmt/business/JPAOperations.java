@@ -1,9 +1,12 @@
 package com.epam.pmt.business;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Query;
+import javax.transaction.Transactional;
 
 import com.epam.pmt.dao.AccountsDBOperations;
 import com.epam.pmt.dao.JPAImpl;
@@ -13,58 +16,256 @@ import com.epam.pmt.entities.Account;
 import com.epam.pmt.entities.Master;
 
 public class JPAOperations {
-	EntityManagerFactory factory;
-	EntityManager manager;
-	JPAImpl jpa=new JPAImpl();
-	public boolean createAccount(String url,String userName,String password,String groupName) {
-		factory = SingletonEntityManagerFactory.getEntityManagerFactory();
-		manager = factory.createEntityManager();
-		List<Account> list = manager.find(Master.class, MasterProvider.getMaster().getUsername()).getAccounts();
-		Master master = MasterProvider.getMaster();
+	static EntityManagerFactory factory;
+	static EntityManager manager;
+	static AccountsDBOperations db=new JPAImpl();
+	@Transactional
+	public static boolean createAccount(String url, String userName, String password, String groupName) {
+		boolean status = false;
 		Account account=new Account();
 		account.setUrl(url);
 		account.setUserName(userName);
 		account.setPassword(password);
 		account.setGroupName(groupName);
-		list.add(account);
-		master.setAccounts(list);
-		jpa.createAccount(account);
+		db.createAccount(account);
 		return true;
-	}
-	public String readPassword(String url) {
-		
-		return jpa.readPassword(url);
+
 	}
 
-	public List<Account> displayByGroup(String groupName) {
-		return jpa.displayByGroup(groupName);
+	@Transactional
+	public static String readPassword(String url) {
+		String password = "";
+		factory = SingletonEntityManagerFactory.getEntityManagerFactory();
+		manager = factory.createEntityManager();
+		Master master = MasterProvider.getMaster();
+		Query query = manager.createQuery("select a from Account a where a.url=?1 and a.master=?2");
+		query.setParameter(1, url);
+		query.setParameter(2, master);
+		List<Account> accounts = query.getResultList();
+		try {
+			Account account = accounts.get(0);
+			db.readPassword(account);
+		} catch (IndexOutOfBoundsException e) {
+
+		}
+
+		return password;
 	}
 
-	public boolean deleteAccount(String url) {
-		return jpa.deleteAccount(url);
+	@Transactional
+	public static List<Account> displayByGroup(String groupName) {
+		List<Account> groupAccounts = null;
+		factory = SingletonEntityManagerFactory.getEntityManagerFactory();
+		manager = factory.createEntityManager();
+		Master master = MasterProvider.getMaster();
+		List<Account> accounts = manager.find(Master.class, master.getUsername()).getAccounts().stream()
+				.filter(i -> i.getGroupName().equals(groupName)).collect(Collectors.toList());
+
+		try {
+			Query query = manager.createQuery("select u from Account u where u.groupName=?1");
+			query.setParameter(1, groupName);
+			groupAccounts = query.getResultList();
+		} catch (Exception e) {
+			if (manager != null) {
+				manager.getTransaction().rollback();
+			}
+		} finally {
+			if (manager != null) {
+				manager.close();
+			}
+		}
+		return groupAccounts;
 	}
 
-	public boolean updateAccountUserName(String url,String newUserName) {
-		return jpa.updateAccountUserName(url, newUserName);
+	@Transactional
+	public static boolean deleteAccount(String url) {
+		boolean status = false;
+		factory = SingletonEntityManagerFactory.getEntityManagerFactory();
+		manager = factory.createEntityManager();
+		Query query = manager.createQuery("select a from Account a where a.url=?1 and a.master=?2");
+		query.setParameter(1, url);
+		query.setParameter(2, MasterProvider.getMaster());
+		List<Account> accounts = query.getResultList();
+		Account account = accounts.get(0);
+		try {
+			if (account != null) {
+				manager.getTransaction().begin();
+				manager.remove(account);
+				manager.getTransaction().commit();
+				status = true;
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage() + status);
+			if (manager != null) {
+				manager.getTransaction().rollback();
+			}
+		} finally {
+			if (manager != null) {
+				manager.close();
+			}
+		}
+		return status;
+
 	}
 
-	public boolean updateAccountPassword(String url,String newPassword) {
-		return jpa.updateAccountPassword(url, newPassword);
-	}
-	public boolean modifyGroup(String groupName, String newGroupName) {
-		return jpa.modifyGroup(groupName, newGroupName);
+	@Transactional
+	public static boolean updateAccountUsername(String url, String newUserName) {
+		boolean status = false;
+		factory = SingletonEntityManagerFactory.getEntityManagerFactory();
+		manager = factory.createEntityManager();
+		Master master = MasterProvider.getMaster();
+		Query query = manager.createQuery("select a from Account a where a.url=?1 and a.master=?2");
+		query.setParameter(1, url);
+		query.setParameter(2, master);
+		List<Account> accounts = query.getResultList();
+		try {
+			
+			if(!accounts.isEmpty()) {
+				accounts.stream().forEach(i -> i.setUserName(newUserName));
+				master.setAccounts(accounts);
+				manager.getTransaction().begin();
+				manager.merge(master);
+				manager.getTransaction().commit();
+				status = true;
+				}
+		} catch (Exception e) {
+			if (manager != null) {
+				manager.getTransaction().rollback();
+			}
+		} finally {
+			if (manager != null) {
+				manager.close();
+			}
+		}
+		return status;
+
 	}
 
-	public boolean deleteGroup(String groupName) {
-		return jpa.deleteGroup(groupName);
+	@Transactional
+	public static boolean updateAccountPassword(String url, String newPassword) {
+		boolean status = false;
+		factory = SingletonEntityManagerFactory.getEntityManagerFactory();
+		manager = factory.createEntityManager();
+		Master master = MasterProvider.getMaster();
+		Query query = manager.createQuery("select a from Account a where a.url=?1 and a.master=?2");
+		query.setParameter(1, url);
+		query.setParameter(2, master);
+		List<Account> accounts = query.getResultList();
+		try {
+			
+			if(!accounts.isEmpty()) {
+				accounts.stream().forEach(i -> i.setPassword(newPassword));
+				master.setAccounts(accounts);
+				manager.getTransaction().begin();
+				manager.merge(master);
+				manager.getTransaction().commit();
+				status = true;
+				}
+		} catch (Exception e) {
+			if (manager != null) {
+				manager.getTransaction().rollback();
+			}
+		} finally {
+			if (manager != null) {
+				manager.close();
+			}
+		}
+		return status;
 	}
 
-	public boolean checkIfURLExists(String url) {
-		return jpa.checkIfGroupExists(url);
+	@Transactional
+	public static boolean checkIfURLExists(String url) {
+		boolean status = false;
+		factory = SingletonEntityManagerFactory.getEntityManagerFactory();
+		manager = factory.createEntityManager();
+		Account account = manager.find(Account.class, url);
+		if (account.getUrl().equals(url)) {
+			status = true;
+		}
+		return status;
+
 	}
 
-	public boolean checkIfGroupExists(String groupName) {
-		return jpa.checkIfGroupExists(groupName);
+	@Transactional
+	public static boolean checkIfGroupExists(String groupName) {
+		boolean status = false;
+		factory = SingletonEntityManagerFactory.getEntityManagerFactory();
+		manager = factory.createEntityManager();
+		Master master = MasterProvider.getMaster();
+		Query query = manager.createQuery("select a from Account a where a.groupName=?1 and a.master=?2");
+		query.setParameter(1, groupName);
+		query.setParameter(2, master);
+		List<Account> accounts = query.getResultList();
+		if (!accounts.isEmpty()) {
+			status = true;
+		}
+		return status;
+	}
+
+	@Transactional
+	public static boolean modifyGroupName(String groupName, String newGroupName) {
+		boolean status = false;
+		factory = SingletonEntityManagerFactory.getEntityManagerFactory();
+		manager = factory.createEntityManager();
+		Master master = MasterProvider.getMaster();
+		Query query = manager.createQuery("select a from Account a where a.groupName=?1 and a.master=?2");
+		query.setParameter(1, groupName);
+		query.setParameter(2, master);
+		List<Account> accounts = query.getResultList();
+
+		try {
+			if(!accounts.isEmpty()) {
+			accounts.stream().forEach(i -> i.setGroupName(newGroupName));
+			master.setAccounts(accounts);
+			manager.getTransaction().begin();
+			manager.merge(master);
+			manager.getTransaction().commit();
+			status = true;
+			}
+		} catch (IllegalStateException e) {
+			if (manager != null) {
+				manager.getTransaction().rollback();
+			}
+		} finally {
+			if (manager != null) {
+				manager.close();
+			}
+		}
+		return status;
+	}
+
+	@Transactional
+	public static boolean deleteGroup(String groupName) {
+		boolean status = false;
+		factory = SingletonEntityManagerFactory.getEntityManagerFactory();
+		manager = factory.createEntityManager();
+		Master master = MasterProvider.getMaster();
+		Query query = manager.createQuery("select a from Account a where a.groupName=?1 and a.master=?2");
+		query.setParameter(1, groupName);
+		query.setParameter(2, master);
+		List<Account> accounts = query.getResultList();
+		try {
+			if (!accounts.isEmpty()) {
+				for (int i = 0; i < accounts.size(); i++) {
+					manager.getTransaction().begin();
+					manager.remove(accounts.get(i));
+					manager.getTransaction().commit();
+				}
+				status = true;
+			}
+
+		} catch (Exception e) {
+			if (manager != null) {
+				manager.getTransaction().rollback();
+			}
+		} finally {
+			if (manager != null) {
+				manager.close();
+			}
+		}
+
+		return status;
+
 	}
 	
 }

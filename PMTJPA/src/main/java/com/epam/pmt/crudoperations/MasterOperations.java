@@ -43,5 +43,20 @@ public class MasterOperations {
 		return status;
 		
 	}
+	public static boolean checkIfMasterExists(String userName) {
+		boolean status = false;
+		factory = SingletonEntityManagerFactory.getEntityManagerFactory();
+		manager = factory.createEntityManager();
+		try {
+		Master account = manager.find(Master.class, userName);
+			if (account.getUsername().equals(userName)) {
+				status = true;
+			}
+		}
+		catch(Exception e) {
+			System.out.println("Register an Account before Login");
+		}
+		return status;
+	}
 	
 }
