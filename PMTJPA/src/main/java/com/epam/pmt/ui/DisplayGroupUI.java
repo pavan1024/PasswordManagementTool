@@ -5,7 +5,9 @@ import java.util.Scanner;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import com.epam.pmt.business.DisplayGroup;
+
+import com.epam.pmt.business.AccountOperations;
+//import com.epam.pmt.business.DisplayGroup;
 import com.epam.pmt.entities.Account;
 import com.epam.pmt.ui.DisplayGroupUI;
 
@@ -18,8 +20,8 @@ public class DisplayGroupUI {
 		LOGGER.info("Enter the Group Name ");
 		String groupName = input.nextLine();
 
-		if (DisplayGroup.checkIfGroupExists(groupName)) {
-			List<Account> accounts = DisplayGroup.groupDetails(groupName);
+		if (AccountOperations.checkIfGroupExists(groupName)) {
+			List<Account> accounts =AccountOperations.groupDetails(groupName);
 			accounts.forEach(i -> LOGGER.info("URL : " + i.getUrl() + ", GroupName : " + i.getGroupName()
 					+ ", Username : " + i.getUserName() + ", Password : " + i.getPassword()));
 		} else

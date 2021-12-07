@@ -3,7 +3,7 @@ package com.epam.pmt.business;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
-import com.epam.pmt.crudoperations.MasterOperations;
+import com.epam.pmt.dao.MasterOperations;
 import com.epam.pmt.db.MasterProvider;
 import com.epam.pmt.db.SingletonEntityManager;
 import com.epam.pmt.db.SingletonEntityManagerFactory;

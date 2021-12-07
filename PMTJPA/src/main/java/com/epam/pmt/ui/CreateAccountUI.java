@@ -5,13 +5,13 @@ import java.util.Scanner;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.epam.pmt.business.CreateAccount;
+import com.epam.pmt.business.AccountOperations;
+//import com.epam.pmt.business.CreateAccount;
 import com.epam.pmt.ui.CreateAccountUI;
 import com.epam.pmt.business.Validation;
 
 public class CreateAccountUI {
 	private static final Logger LOGGER = LogManager.getLogger(CreateAccountUI.class);
-
 	public static void createAccount() {
 		@SuppressWarnings("resource")
 		Scanner input = new Scanner(System.in);
@@ -29,7 +29,7 @@ public class CreateAccountUI {
 			if (Validation.isValidPassword(password)) {
 				LOGGER.info("Enter Group Name ");
 				String groupName = input.nextLine();
-				CreateAccount.createAccount(url, userName, password, groupName);
+				AccountOperations.createAccount(url, userName, password, groupName);
 				LOGGER.info("Account Added Succesfully...........!!!!!!!");
 			} else {
 				LOGGER.info(

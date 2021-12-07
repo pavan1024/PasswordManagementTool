@@ -1,15 +1,16 @@
 package com.epam.pmt.business;
 
-import com.epam.pmt.dao.AccountOperations;
+import com.epam.pmt.dao.AccountsDBOperations;
+import com.epam.pmt.dao.AccountsDBOperationsImpl;
 
 public class UpdateGroupName {
-
+	static AccountsDBOperations db=new AccountsDBOperationsImpl();
 	public static boolean checkIfGroupExists(String groupName) {
-		return AccountOperations.checkIfGroupExists(groupName);	
+		return db.checkIfGroupExists(groupName);	
 	}
 
 	public static boolean updateGroupName(String groupName, String newGroupName) {
-		return AccountOperations.modifyGroupName(groupName, newGroupName);
+		return db.modifyGroup(groupName, newGroupName);
 	}
 
 }

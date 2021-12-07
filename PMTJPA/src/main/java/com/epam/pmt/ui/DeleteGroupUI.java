@@ -4,7 +4,9 @@ import java.util.Scanner;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import com.epam.pmt.business.DeleteGroup;
+
+import com.epam.pmt.business.AccountOperations;
+//import com.epam.pmt.business.DeleteGroup;
 import com.epam.pmt.ui.DeleteGroupUI;
 
 public class DeleteGroupUI {
@@ -15,7 +17,7 @@ public class DeleteGroupUI {
 		Scanner input = new Scanner(System.in);
 		LOGGER.info("Enter the GroupName ");
 		String groupName = input.nextLine();
-		boolean flag = DeleteGroup.deleteGroup(groupName);
+		boolean flag = AccountOperations.deleteGroup(groupName);
 		if (flag) 
 			LOGGER.info("Group Deleted Successfully..........!!!!!!");
 		else

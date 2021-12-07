@@ -12,12 +12,12 @@ import com.epam.pmt.db.MasterProvider;
 import com.epam.pmt.db.SingletonEntityManagerFactory;
 import com.epam.pmt.entities.*;
 
-public class AccountOperations {
-	static EntityManagerFactory factory;
-	static EntityManager manager;
+public class AccountsDBOperationsImpl  implements AccountsDBOperations{
+	EntityManagerFactory factory;
+	EntityManager manager;
 
 	@Transactional
-	public static boolean createAccount(Account account) {
+	public boolean createAccount(Account account) {
 		boolean status = false;
 		factory = SingletonEntityManagerFactory.getEntityManagerFactory();
 		manager = factory.createEntityManager();
@@ -44,7 +44,7 @@ public class AccountOperations {
 	}
 
 	@Transactional
-	public static String readPassword(String url) {
+	public String readPassword(String url) {
 		String password = "";
 		factory = SingletonEntityManagerFactory.getEntityManagerFactory();
 		manager = factory.createEntityManager();
@@ -64,7 +64,7 @@ public class AccountOperations {
 	}
 
 	@Transactional
-	public static List<Account> displayByGroup(String groupName) {
+	public List<Account> displayByGroup(String groupName) {
 		List<Account> groupAccounts = null;
 		factory = SingletonEntityManagerFactory.getEntityManagerFactory();
 		manager = factory.createEntityManager();
@@ -89,7 +89,7 @@ public class AccountOperations {
 	}
 
 	@Transactional
-	public static boolean deleteAccount(String url) {
+	public boolean deleteAccount(String url) {
 		boolean status = false;
 		factory = SingletonEntityManagerFactory.getEntityManagerFactory();
 		manager = factory.createEntityManager();
@@ -119,8 +119,10 @@ public class AccountOperations {
 
 	}
 
+	
+	@Override
 	@Transactional
-	public static boolean updateAccountUsername(String url, String newUserName) {
+	public boolean updateAccountUserName(String url, String newUserName) {
 		boolean status = false;
 		factory = SingletonEntityManagerFactory.getEntityManagerFactory();
 		manager = factory.createEntityManager();
@@ -149,11 +151,12 @@ public class AccountOperations {
 			}
 		}
 		return status;
-
 	}
+	
+	
 
 	@Transactional
-	public static boolean updateAccountPassword(String url, String newPassword) {
+	public boolean updateAccountPassword(String url, String newPassword) {
 		boolean status = false;
 		factory = SingletonEntityManagerFactory.getEntityManagerFactory();
 		manager = factory.createEntityManager();
@@ -185,7 +188,7 @@ public class AccountOperations {
 	}
 
 	@Transactional
-	public static boolean checkIfURLExists(String url) {
+	public boolean checkIfURLExists(String url) {
 		boolean status = false;
 		factory = SingletonEntityManagerFactory.getEntityManagerFactory();
 		manager = factory.createEntityManager();
@@ -198,7 +201,7 @@ public class AccountOperations {
 	}
 
 	@Transactional
-	public static boolean checkIfGroupExists(String groupName) {
+	public boolean checkIfGroupExists(String groupName) {
 		boolean status = false;
 		factory = SingletonEntityManagerFactory.getEntityManagerFactory();
 		manager = factory.createEntityManager();
@@ -214,7 +217,8 @@ public class AccountOperations {
 	}
 
 	@Transactional
-	public static boolean modifyGroupName(String groupName, String newGroupName) {
+	@Override
+	public boolean modifyGroup(String groupName, String newGroupName) {
 		boolean status = false;
 		factory = SingletonEntityManagerFactory.getEntityManagerFactory();
 		manager = factory.createEntityManager();
@@ -246,7 +250,7 @@ public class AccountOperations {
 	}
 
 	@Transactional
-	public static boolean deleteGroup(String groupName) {
+	public boolean deleteGroup(String groupName) {
 		boolean status = false;
 		factory = SingletonEntityManagerFactory.getEntityManagerFactory();
 		manager = factory.createEntityManager();
@@ -278,5 +282,8 @@ public class AccountOperations {
 		return status;
 
 	}
+
+	
+	
 
 }

@@ -1,4 +1,4 @@
-package com.epam.pmt.crudoperations;
+package com.epam.pmt.dao;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -5,7 +5,8 @@ import java.util.Scanner;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.epam.pmt.business.UpdateAccount;
+import com.epam.pmt.business.AccountOperations;
+//import com.epam.pmt.business.UpdateAccount;
 import com.epam.pmt.ui.UpdateAccountUI;
 
 public class UpdateAccountUI {
@@ -25,7 +26,7 @@ public class UpdateAccountUI {
 	}
 
 	private static void usersChoice(String choice, String url) {
-		boolean found = UpdateAccount.checkUrl(url);
+		boolean found = AccountOperations.checkUrl(url);
 		switch (choice) {
 		case "1":
 			if (found) {
@@ -49,14 +50,14 @@ public class UpdateAccountUI {
 	public static void updateUserName(String url) {
 		LOGGER.info("Enter New Username ");
 		String newUserName = input.nextLine();
-		UpdateAccount.updateUserName(url, newUserName);
+		AccountOperations.updateUserName(url, newUserName);
 		LOGGER.info("Username Updated Successfully.........!!!!!!");
 	}
 
 	public static void updatePassword(String url) {
 		LOGGER.info("Enter New Password ");
 		String newPassword = input.nextLine();
-		boolean flag = UpdateAccount.updatePassword(url, newPassword);
+		boolean flag = AccountOperations.updatePassword(url, newPassword);
 		if (flag)
 			LOGGER.info("Password Updated Successfully........!!!!!!!!!!! ");
 		else

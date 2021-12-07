@@ -5,7 +5,8 @@ import java.util.Scanner;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.epam.pmt.business.UpdateGroupName;
+import com.epam.pmt.business.AccountOperations;
+//import com.epam.pmt.business.UpdateGroupName;
 import com.epam.pmt.ui.UpdateGroupNameUI;
 
 public class UpdateGroupNameUI {
@@ -16,7 +17,7 @@ public class UpdateGroupNameUI {
 			LOGGER.info("Enter the Group Name ");
 			String groupName = input.nextLine();
 			
-			boolean found=UpdateGroupName.checkIfGroupExists(groupName);
+			boolean found=AccountOperations.checkIfGroupExists(groupName);
 			updateIfGroupExists(input, groupName, found);
 	}
 
@@ -24,7 +25,7 @@ public class UpdateGroupNameUI {
 		if(found) {
 		LOGGER.info("Enter the New Group Name ");
 		String newGroupName = input.nextLine();
-		UpdateGroupName.updateGroupName(groupName, newGroupName);
+		AccountOperations.updateGroupName(groupName, newGroupName);
 		LOGGER.debug("Group Name Updated Successfully");
 		}
 		else {

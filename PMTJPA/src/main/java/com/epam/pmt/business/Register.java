@@ -1,8 +1,8 @@
 package com.epam.pmt.business;
 
 //import com.epam.rd.database.MasterLoginCredentials;
-import com.epam.pmt.crudoperations.*;
 import com.epam.pmt.business.Validation;
+import com.epam.pmt.dao.MasterOperations;
 import com.epam.pmt.entities.Master;
 
 public class Register {
