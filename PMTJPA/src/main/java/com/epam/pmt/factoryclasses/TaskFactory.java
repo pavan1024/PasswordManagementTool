@@ -1,10 +1,10 @@
 package com.epam.pmt.factoryclasses;
 
-
 import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 @Component
 public class TaskFactory {
 	@Autowired
@@ -21,8 +21,9 @@ public class TaskFactory {
 	UpdateGroupName updateGroupName;
 	@Autowired
 	DeleteGroup deleteGroup;
+
 	public Task createTask(int choice) {
-		HashMap<Integer,Task> map=new HashMap<>();
+		HashMap<Integer, Task> map = new HashMap<>();
 		map.put(1, createAccount);
 		map.put(2, readPassoword);
 		map.put(3, displayGroup);
@@ -30,7 +31,7 @@ public class TaskFactory {
 		map.put(5, updateAccount);
 		map.put(6, updateGroupName);
 		map.put(7, deleteGroup);
-		
+
 		return map.get(choice);
 	}
 }

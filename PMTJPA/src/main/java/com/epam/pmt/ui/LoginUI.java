@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.epam.pmt.business.Login;
+
 @Component
 public class LoginUI {
 
@@ -16,23 +17,24 @@ public class LoginUI {
 	Login login;
 	@Autowired
 	Menu menu;
+
 	public void login() {
 		@SuppressWarnings("resource")
 		Scanner input = new Scanner(System.in);
-		boolean found = false;
+		boolean status = false;
 		LOGGER.info("Enter your Username ");
-		String userName = input.nextLine();
-		if (login.checkIfUserNameExists(userName)) {
+		String username = input.nextLine();
+		if (login.checkIfUserNameExists(username)) {
 			LOGGER.info("Enter your Password ");
 			String password = input.nextLine();
-			found = login.login(userName, password);
-			this.verify(found);
+			status = login.login(username, password);
+			this.verify(status);
 		}
 
 	}
 
-	private void verify(boolean found) {
-		if (found) {
+	private void verify(boolean status) {
+		if (status) {
 			LOGGER.info("Login Successful.....!!!!!!!!");
 			menu.operations();
 		} else {

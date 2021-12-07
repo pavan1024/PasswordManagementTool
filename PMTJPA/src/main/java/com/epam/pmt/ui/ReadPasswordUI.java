@@ -8,18 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.epam.pmt.business.AccountOperations;
-//import com.epam.pmt.business.ReadPassword;
-import com.epam.pmt.entities.Account;
 import com.epam.pmt.ui.ReadPasswordUI;
 
-import java.util.*;
 @Component
 public class ReadPasswordUI {
 	private static final Logger LOGGER = LogManager.getLogger(ReadPasswordUI.class);
 	@Autowired
 	AccountOperations accountOperations;
+
 	public void displayAccountPassword() {
-		
+
 		@SuppressWarnings("resource")
 		Scanner input = new Scanner(System.in);
 		LOGGER.info("Enter the URL ");
@@ -33,7 +31,7 @@ public class ReadPasswordUI {
 				LOGGER.info("Account Password : " + accountOperations.readPassword(url));
 			else
 				LOGGER.info("URL not found");
-		} catch (Exception e) {
+		} catch (IndexOutOfBoundsException e) {
 			LOGGER.error("IndexOutOfBoundsException");
 			LOGGER.info("URL Not Found ");
 		}

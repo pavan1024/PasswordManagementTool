@@ -11,12 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.epam.pmt.factoryclasses.*;
+
 @Component
 public class Menu {
 	@Autowired
 	TaskFactory taskFactory;
 	private static final Logger LOGGER = LogManager.getLogger(Menu.class);
-	
+
 	public void operations() {
 		@SuppressWarnings("resource")
 		Scanner input = new Scanner(System.in);
@@ -35,7 +36,7 @@ public class Menu {
 			try {
 				choice = input.nextInt();
 			} catch (InputMismatchException e) {
-				// LOGGER.error("InputMismatchException");
+				LOGGER.error("InputMismatchException");
 				LOGGER.info("Enter the Numbers from 1 to 7 \n" + "");
 				this.operations();
 				break;
@@ -46,7 +47,7 @@ public class Menu {
 				optional.get().doTask();
 			} catch (NoSuchElementException e) {
 				if (choice != 0)
-					
+
 					LOGGER.info("Enter the Right choice  \n");
 			}
 			LOGGER.info("");

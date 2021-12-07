@@ -8,13 +8,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.epam.pmt.business.AccountOperations;
+import com.epam.pmt.business.Validation;
 //import com.epam.pmt.business.UpdateAccount;
 import com.epam.pmt.ui.UpdateAccountUI;
+
 @Component
 public class UpdateAccountUI {
 	private static final Logger LOGGER = LogManager.getLogger(UpdateAccountUI.class);
 	@Autowired
 	AccountOperations accountOperations;
+	@Autowired
+	Validation validation;
 	static Scanner input = new Scanner(System.in);
 
 	public void updateAccountDetails() {
@@ -52,18 +56,19 @@ public class UpdateAccountUI {
 
 	public void updateUserName(String url) {
 		LOGGER.info("Enter New Username ");
-		String newUserName = input.nextLine();
-		accountOperations.updateUserName(url, newUserName);
+		String newUsername = input.nextLine();
+		accountOperations.updateUserName(url, newUsername);
 		LOGGER.info("Username Updated Successfully.........!!!!!!");
 	}
 
 	public void updatePassword(String url) {
 		LOGGER.info("Enter New Password ");
 		String newPassword = input.nextLine();
-		boolean flag = accountOperations.updatePassword(url, newPassword);
-		if (flag)
+		boolean flag = validation.isValidPassword(newPassword);
+		if (flag) {
+			accountOperations.updatePassword(url, newPassword);
 			LOGGER.info("Password Updated Successfully........!!!!!!!!!!! ");
-		else
+		} else
 			LOGGER.info("Enter the password with atleat 1 UpperCase, 1 LowerCase , 1 Number, 1 Special Character");
 	}
 

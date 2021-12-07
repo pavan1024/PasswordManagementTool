@@ -12,9 +12,9 @@ import org.springframework.stereotype.Component;
 public class Validation {
 	public boolean isValidPassword(String password) {
 		String regex = "^(?=.*[0-9])" + "(?=.*[a-z])(?=.*[A-Z])" + "(?=.*[@#$%^&+=])" + "(?=\\S+$).{8,20}$";
-		Pattern p = Pattern.compile(regex);
-		Matcher m = p.matcher(password);
-		return m.matches();
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(password);
+		return matcher.matches();
 	}
 
 	public boolean isValidURL(String url) {

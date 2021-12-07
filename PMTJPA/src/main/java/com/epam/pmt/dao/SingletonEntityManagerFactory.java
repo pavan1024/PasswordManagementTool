@@ -5,14 +5,16 @@ import javax.persistence.Persistence;
 
 public class SingletonEntityManagerFactory {
 	static EntityManagerFactory entityManagerFactory;
+
 	private SingletonEntityManagerFactory() {
-		
+
 	}
+
 	public static EntityManagerFactory getEntityManagerFactory() {
-		if(entityManagerFactory==null){
-			entityManagerFactory=Persistence.createEntityManagerFactory("pmt-database");
+		if (entityManagerFactory == null) {
+			entityManagerFactory = Persistence.createEntityManagerFactory("pmt-database");
+		}
+		return entityManagerFactory;
 	}
-	return entityManagerFactory;
-	}
-	 
+
 }

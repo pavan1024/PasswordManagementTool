@@ -8,12 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.epam.pmt.business.Register;
+
 @Component
 public class RegisterUI {
 	@Autowired
 	Register register;
 	private static final Logger LOGGER = LogManager.getLogger(RegisterUI.class);
-	
+
 	public void register() {
 		@SuppressWarnings("resource")
 		Scanner input = new Scanner(System.in);

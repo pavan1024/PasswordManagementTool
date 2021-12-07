@@ -9,7 +9,7 @@ import com.epam.pmt.ui.CreateAccountUI;
 public class CreateAccount implements Task {
 	@Autowired
 	CreateAccountUI createAccountUI;
-	
+
 	@Override
 	public void doTask() {
 		createAccountUI.createAccount();

@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.epam.pmt.dao.AccountsDBOperations;
-import com.epam.pmt.dao.AccountsDBOperationsImpl;
 import com.epam.pmt.entities.Account;
 
 @Component
@@ -14,12 +13,12 @@ public class AccountOperations {
 	@Autowired
 	AccountsDBOperations accountsDBOperations;
 
-	public void createAccount(String url, String userName, String password, String groupName) {
+	public void createAccount(String url, String userName, String password, String groupname) {
 		Account account = new Account();
 		account.setUrl(url);
 		account.setUserName(userName);
 		account.setPassword(password);
-		account.setGroupName(groupName);
+		account.setGroupName(groupname);
 		accountsDBOperations.createAccount(account);
 
 	}
@@ -30,19 +29,19 @@ public class AccountOperations {
 		return status;
 	}
 
-	public boolean deleteGroup(String groupName) {
+	public boolean deleteGroup(String groupname) {
 		boolean status = false;
-		status = this.accountsDBOperations.deleteGroup(groupName);
+		status = accountsDBOperations.deleteGroup(groupname);
 		return status;
 	}
 
-	public List<Account> groupDetails(String groupName) {
-		return this.accountsDBOperations.displayByGroup(groupName);
+	public List<Account> groupDetails(String groupname) {
+		return this.accountsDBOperations.displayByGroup(groupname);
 	}
 
-	public boolean checkIfGroupExists(String groupName) {
+	public boolean checkIfGroupExists(String groupname) {
 		boolean status = false;
-		status = this.accountsDBOperations.checkIfGroupExists(groupName);
+		status = this.accountsDBOperations.checkIfGroupExists(groupname);
 		return status;
 	}
 
@@ -54,9 +53,9 @@ public class AccountOperations {
 		return this.accountsDBOperations.checkIfURLExists(url);
 	}
 
-	public boolean updateUserName(String url, String newUserName) {
+	public boolean updateUserName(String url, String newUsername) {
 		boolean status = false;
-		status = this.accountsDBOperations.updateAccountUserName(url, newUserName);
+		status = this.accountsDBOperations.updateAccountUserName(url, newUsername);
 		return status;
 
 	}
@@ -67,7 +66,7 @@ public class AccountOperations {
 		return status;
 	}
 
-	public boolean updateGroupName(String groupName, String newGroupName) {
-		return this.accountsDBOperations.modifyGroup(groupName, newGroupName);
+	public boolean updateGroupName(String groupName, String newGroupname) {
+		return this.accountsDBOperations.modifyGroup(groupName, newGroupname);
 	}
 }

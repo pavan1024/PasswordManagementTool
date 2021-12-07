@@ -8,19 +8,17 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.epam.pmt.entities.*;
 
 @Component
 @Primary
-public class AccountsDBOperationsImpl  implements AccountsDBOperations{
+public class AccountsDBOperationsImpl implements AccountsDBOperations {
 	EntityManagerFactory factory;
 	EntityManager manager;
-	
+
 	public boolean createAccount(Account account) {
 		boolean status = false;
 		factory = SingletonEntityManagerFactory.getEntityManagerFactory();
@@ -34,15 +32,14 @@ public class AccountsDBOperationsImpl  implements AccountsDBOperations{
 			manager.merge(master);
 			manager.getTransaction().commit();
 			status = true;
-		} catch (Exception e) {
-				manager.getTransaction().rollback();
+		} catch (IllegalStateException e) {
+			manager.getTransaction().rollback();
 		} finally {
-				manager.close();
+			manager.close();
 		}
 		return status;
 
 	}
-
 
 	public String readPassword(String url) {
 		String password = "";
@@ -56,13 +53,14 @@ public class AccountsDBOperationsImpl  implements AccountsDBOperations{
 		try {
 			Account account = accounts.get(0);
 			password = account.getPassword();
-		} catch (IndexOutOfBoundsException e) {
-
+		} catch (IndexOutOfBoundsException | IllegalStateException ex) {
+			manager.getTransaction().rollback();
+		} finally {
+			manager.close();
 		}
 
 		return password;
 	}
-
 
 	public List<Account> displayByGroup(String groupName) {
 		List<Account> groupAccounts = null;
@@ -76,18 +74,13 @@ public class AccountsDBOperationsImpl  implements AccountsDBOperations{
 			Query query = manager.createQuery("select u from Account u where u.groupName=?1");
 			query.setParameter(1, groupName);
 			groupAccounts = query.getResultList();
-		} catch (Exception e) {
-			if (manager != null) {
-				manager.getTransaction().rollback();
-			}
+		} catch (IllegalStateException e) {
+			manager.getTransaction().rollback();
 		} finally {
-			if (manager != null) {
-				manager.close();
-			}
+			manager.close();
 		}
 		return groupAccounts;
 	}
-
 
 	public boolean deleteAccount(String url) {
 		boolean status = false;
@@ -105,21 +98,17 @@ public class AccountsDBOperationsImpl  implements AccountsDBOperations{
 				manager.getTransaction().commit();
 				status = true;
 			}
-		} catch (Exception e) {
-			System.out.println(e.getMessage() + status);
-			if (manager != null) {
-				manager.getTransaction().rollback();
-			}
+		} catch (IllegalStateException e) {
+			manager.getTransaction().rollback();
+
 		} finally {
-			if (manager != null) {
-				manager.close();
-			}
+
+			manager.close();
 		}
 		return status;
 
 	}
 
-	
 	@Override
 	public boolean updateAccountUserName(String url, String newUserName) {
 		boolean status = false;
@@ -131,29 +120,22 @@ public class AccountsDBOperationsImpl  implements AccountsDBOperations{
 		query.setParameter(2, master);
 		List<Account> accounts = query.getResultList();
 		try {
-			
-			if(!accounts.isEmpty()) {
+
+			if (!accounts.isEmpty()) {
 				accounts.stream().forEach(i -> i.setUserName(newUserName));
 				master.setAccounts(accounts);
 				manager.getTransaction().begin();
 				manager.merge(master);
 				manager.getTransaction().commit();
 				status = true;
-				}
-		} catch (Exception e) {
-			if (manager != null) {
-				manager.getTransaction().rollback();
 			}
+		} catch (IllegalStateException e) {
+			manager.getTransaction().rollback();
 		} finally {
-			if (manager != null) {
-				manager.close();
-			}
+			manager.close();
 		}
 		return status;
 	}
-	
-	
-
 
 	public boolean updateAccountPassword(String url, String newPassword) {
 		boolean status = false;
@@ -165,27 +147,22 @@ public class AccountsDBOperationsImpl  implements AccountsDBOperations{
 		query.setParameter(2, master);
 		List<Account> accounts = query.getResultList();
 		try {
-			
-			if(!accounts.isEmpty()) {
+
+			if (!accounts.isEmpty()) {
 				accounts.stream().forEach(i -> i.setPassword(newPassword));
 				master.setAccounts(accounts);
 				manager.getTransaction().begin();
 				manager.merge(master);
 				manager.getTransaction().commit();
 				status = true;
-				}
-		} catch (Exception e) {
-			if (manager != null) {
-				manager.getTransaction().rollback();
 			}
+		} catch (IllegalStateException e) {
+			manager.getTransaction().rollback();
 		} finally {
-			if (manager != null) {
-				manager.close();
-			}
+			manager.close();
 		}
 		return status;
 	}
-
 
 	public boolean checkIfURLExists(String url) {
 		boolean status = false;
@@ -227,26 +204,21 @@ public class AccountsDBOperationsImpl  implements AccountsDBOperations{
 		List<Account> accounts = query.getResultList();
 
 		try {
-			if(!accounts.isEmpty()) {
-			accounts.stream().forEach(i -> i.setGroupName(newGroupName));
-			master.setAccounts(accounts);
-			manager.getTransaction().begin();
-			manager.merge(master);
-			manager.getTransaction().commit();
-			status = true;
+			if (!accounts.isEmpty()) {
+				accounts.stream().forEach(i -> i.setGroupName(newGroupName));
+				master.setAccounts(accounts);
+				manager.getTransaction().begin();
+				manager.merge(master);
+				manager.getTransaction().commit();
+				status = true;
 			}
 		} catch (IllegalStateException e) {
-			if (manager != null) {
-				manager.getTransaction().rollback();
-			}
+			manager.getTransaction().rollback();
 		} finally {
-			if (manager != null) {
-				manager.close();
-			}
+			manager.close();
 		}
 		return status;
 	}
-
 
 	public boolean deleteGroup(String groupName) {
 		boolean status = false;
@@ -267,21 +239,14 @@ public class AccountsDBOperationsImpl  implements AccountsDBOperations{
 				status = true;
 			}
 
-		} catch (Exception e) {
-			if (manager != null) {
-				manager.getTransaction().rollback();
-			}
+		} catch (IllegalStateException e) {
+			manager.getTransaction().rollback();
 		} finally {
-			if (manager != null) {
-				manager.close();
-			}
+			manager.close();
 		}
 
 		return status;
 
 	}
-
-	
-	
 
 }

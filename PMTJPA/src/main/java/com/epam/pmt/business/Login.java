@@ -16,14 +16,14 @@ public class Login {
 	static EntityManager manager;
 
 	public boolean login(String userName, String password) {
-		boolean found = false;
+		boolean status = false;
 		factory = SingletonEntityManagerFactory.getEntityManagerFactory();
 		manager = factory.createEntityManager();
 		if (password.equals(manager.find(Master.class, userName).getPassword())) {
 			MasterProvider.setMaster(userName, password);
-			found = true;
+			status = true;
 		}
-		return found;
+		return status;
 	}
 
 	public boolean checkIfUserNameExists(String userName) {
