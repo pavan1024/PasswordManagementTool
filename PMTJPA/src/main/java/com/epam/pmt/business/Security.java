@@ -2,8 +2,11 @@ package com.epam.pmt.business;
 
 import java.util.Base64;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class Security {
-	public static String encrypt(String plainPwd) {
+	public String encrypt(String plainPwd) {
 		String b64encoded = Base64.getEncoder().encodeToString(plainPwd.getBytes());
 		String reverse = new StringBuilder(b64encoded).reverse().toString();
 		StringBuilder tmp = new StringBuilder();
@@ -14,7 +17,7 @@ public class Security {
 		return tmp.toString();
 	}
 
-	public static String decrypt(String encryptedPwd) {
+	public String decrypt(String encryptedPwd) {
 		StringBuilder temp = new StringBuilder();
 		final int OFFSET = 4;
 		for (int i = 0; i < encryptedPwd.length(); i++) {

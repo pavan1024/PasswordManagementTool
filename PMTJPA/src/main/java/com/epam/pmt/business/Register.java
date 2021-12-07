@@ -1,18 +1,23 @@
 package com.epam.pmt.business;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 //import com.epam.rd.database.MasterLoginCredentials;
 import com.epam.pmt.business.Validation;
 import com.epam.pmt.dao.MasterOperations;
 import com.epam.pmt.entities.Master;
 
+@Component
 public class Register {
-
-	public static boolean register(String userName, String password) {
+	
+	@Autowired
+	Validation validation;
+	public boolean register(String username, String password) {
 		boolean found = false;
-		if (Validation.isValidPassword(password)) {
-//			MasterLoginCredentials.getMasterAccounts().add(new MasterAccount(userName,password));
-			MasterOperations.createMaster(userName,password);
-			
+		if (validation.isValidPassword(password)) {
+			MasterOperations.createMaster(username, password);
+
 			found = true;
 		}
 		return found;

@@ -1,4 +1,4 @@
-package com.epam.pmt.db;
+package com.epam.pmt.dao;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;

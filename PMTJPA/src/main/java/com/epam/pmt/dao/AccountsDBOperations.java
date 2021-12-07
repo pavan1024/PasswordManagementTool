@@ -2,6 +2,8 @@ package com.epam.pmt.dao;
 
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import com.epam.pmt.entities.Account;
 
 public interface AccountsDBOperations {

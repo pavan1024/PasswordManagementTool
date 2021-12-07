@@ -7,13 +7,17 @@ import java.util.Scanner;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.epam.pmt.factoryclasses.*;
-
+@Component
 public class Menu {
+	@Autowired
+	TaskFactory taskFactory;
 	private static final Logger LOGGER = LogManager.getLogger(Menu.class);
-
-	public static void operations() {
+	
+	public void operations() {
 		@SuppressWarnings("resource")
 		Scanner input = new Scanner(System.in);
 		int choice = 0;
@@ -33,16 +37,16 @@ public class Menu {
 			} catch (InputMismatchException e) {
 				// LOGGER.error("InputMismatchException");
 				LOGGER.info("Enter the Numbers from 1 to 7 \n" + "");
-				Menu.operations();
+				this.operations();
 				break;
 			}
-			TaskFactory taskFactory = new TaskFactory();
 			Task task = taskFactory.createTask(choice);
 			Optional<Task> optional = Optional.ofNullable(task);
 			try {
 				optional.get().doTask();
 			} catch (NoSuchElementException e) {
 				if (choice != 0)
+					
 					LOGGER.info("Enter the Right choice  \n");
 			}
 			LOGGER.info("");

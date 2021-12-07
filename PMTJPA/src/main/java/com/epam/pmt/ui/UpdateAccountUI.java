@@ -4,17 +4,20 @@ import java.util.Scanner;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.epam.pmt.business.AccountOperations;
 //import com.epam.pmt.business.UpdateAccount;
 import com.epam.pmt.ui.UpdateAccountUI;
-
+@Component
 public class UpdateAccountUI {
 	private static final Logger LOGGER = LogManager.getLogger(UpdateAccountUI.class);
-
+	@Autowired
+	AccountOperations accountOperations;
 	static Scanner input = new Scanner(System.in);
 
-	public static void updateAccountDetails() {
+	public void updateAccountDetails() {
 		// checks whether the list is empty or not
 		LOGGER.info("Enter your choice");
 		LOGGER.info("1)update username");
@@ -25,8 +28,8 @@ public class UpdateAccountUI {
 		usersChoice(choice, url);
 	}
 
-	private static void usersChoice(String choice, String url) {
-		boolean found = AccountOperations.checkUrl(url);
+	private void usersChoice(String choice, String url) {
+		boolean found = accountOperations.checkUrl(url);
 		switch (choice) {
 		case "1":
 			if (found) {
@@ -47,17 +50,17 @@ public class UpdateAccountUI {
 		}
 	}
 
-	public static void updateUserName(String url) {
+	public void updateUserName(String url) {
 		LOGGER.info("Enter New Username ");
 		String newUserName = input.nextLine();
-		AccountOperations.updateUserName(url, newUserName);
+		accountOperations.updateUserName(url, newUserName);
 		LOGGER.info("Username Updated Successfully.........!!!!!!");
 	}
 
-	public static void updatePassword(String url) {
+	public void updatePassword(String url) {
 		LOGGER.info("Enter New Password ");
 		String newPassword = input.nextLine();
-		boolean flag = AccountOperations.updatePassword(url, newPassword);
+		boolean flag = accountOperations.updatePassword(url, newPassword);
 		if (flag)
 			LOGGER.info("Password Updated Successfully........!!!!!!!!!!! ");
 		else

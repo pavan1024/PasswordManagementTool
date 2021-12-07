@@ -8,15 +8,19 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 
-import com.epam.pmt.db.MasterProvider;
-import com.epam.pmt.db.SingletonEntityManagerFactory;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import com.epam.pmt.entities.*;
 
+@Component
+@Primary
 public class AccountsDBOperationsImpl  implements AccountsDBOperations{
 	EntityManagerFactory factory;
 	EntityManager manager;
-
-	@Transactional
+	
 	public boolean createAccount(Account account) {
 		boolean status = false;
 		factory = SingletonEntityManagerFactory.getEntityManagerFactory();
@@ -31,19 +35,15 @@ public class AccountsDBOperationsImpl  implements AccountsDBOperations{
 			manager.getTransaction().commit();
 			status = true;
 		} catch (Exception e) {
-			if (manager != null) {
 				manager.getTransaction().rollback();
-			}
 		} finally {
-			if (manager != null) {
 				manager.close();
-			}
 		}
 		return status;
 
 	}
 
-	@Transactional
+
 	public String readPassword(String url) {
 		String password = "";
 		factory = SingletonEntityManagerFactory.getEntityManagerFactory();
@@ -63,7 +63,7 @@ public class AccountsDBOperationsImpl  implements AccountsDBOperations{
 		return password;
 	}
 
-	@Transactional
+
 	public List<Account> displayByGroup(String groupName) {
 		List<Account> groupAccounts = null;
 		factory = SingletonEntityManagerFactory.getEntityManagerFactory();
@@ -88,7 +88,7 @@ public class AccountsDBOperationsImpl  implements AccountsDBOperations{
 		return groupAccounts;
 	}
 
-	@Transactional
+
 	public boolean deleteAccount(String url) {
 		boolean status = false;
 		factory = SingletonEntityManagerFactory.getEntityManagerFactory();
@@ -121,7 +121,6 @@ public class AccountsDBOperationsImpl  implements AccountsDBOperations{
 
 	
 	@Override
-	@Transactional
 	public boolean updateAccountUserName(String url, String newUserName) {
 		boolean status = false;
 		factory = SingletonEntityManagerFactory.getEntityManagerFactory();
@@ -155,7 +154,7 @@ public class AccountsDBOperationsImpl  implements AccountsDBOperations{
 	
 	
 
-	@Transactional
+
 	public boolean updateAccountPassword(String url, String newPassword) {
 		boolean status = false;
 		factory = SingletonEntityManagerFactory.getEntityManagerFactory();
@@ -187,7 +186,7 @@ public class AccountsDBOperationsImpl  implements AccountsDBOperations{
 		return status;
 	}
 
-	@Transactional
+
 	public boolean checkIfURLExists(String url) {
 		boolean status = false;
 		factory = SingletonEntityManagerFactory.getEntityManagerFactory();
@@ -216,7 +215,6 @@ public class AccountsDBOperationsImpl  implements AccountsDBOperations{
 		return status;
 	}
 
-	@Transactional
 	@Override
 	public boolean modifyGroup(String groupName, String newGroupName) {
 		boolean status = false;
@@ -249,7 +247,7 @@ public class AccountsDBOperationsImpl  implements AccountsDBOperations{
 		return status;
 	}
 
-	@Transactional
+
 	public boolean deleteGroup(String groupName) {
 		boolean status = false;
 		factory = SingletonEntityManagerFactory.getEntityManagerFactory();

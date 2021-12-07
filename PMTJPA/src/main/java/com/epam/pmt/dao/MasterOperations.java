@@ -6,10 +6,11 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
-import com.epam.pmt.db.SingletonEntityManagerFactory;
+import org.springframework.stereotype.Component;
+
 import com.epam.pmt.entities.Account;
 import com.epam.pmt.entities.Master;
-
+@Component
 public class MasterOperations {
 
 	static EntityManagerFactory factory;

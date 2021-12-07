@@ -4,23 +4,26 @@ import java.util.Scanner;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.epam.pmt.business.Register;
-
+@Component
 public class RegisterUI {
-
+	@Autowired
+	Register register;
 	private static final Logger LOGGER = LogManager.getLogger(RegisterUI.class);
-
-	public static void register() {
+	
+	public void register() {
 		@SuppressWarnings("resource")
 		Scanner input = new Scanner(System.in);
 		LOGGER.info("Enter Username ");
-		String userName = input.next();
+		String username = input.next();
 		LOGGER.info("Enter Password ");
 		LOGGER.info("(Note) : Password Should be atleast 1 UpperCase, 1 LowerCase , 1 Number, 1 Special Character");
 		String password = input.next();
 
-		boolean registered = Register.register(userName, password);
+		boolean registered = register.register(username, password);
 		if (registered) {
 			LOGGER.info("Account Registered Successfully......!!!!!!!!!!!!");
 		} else {
