@@ -21,7 +21,7 @@ public class DisplayGroupUI {
 	public void displayGroupAccountDetails() {
 		@SuppressWarnings("resource")
 		Scanner input = new Scanner(System.in);
-		LOGGER.info("Enter the Group Name ");
+		LOGGER.info("Enter the Groupname ");
 		String groupname = input.nextLine();
 
 		if (accountOperations.checkIfGroupExists(groupname)) {
@@ -29,7 +29,7 @@ public class DisplayGroupUI {
 			accounts.forEach(i -> LOGGER.info("URL : " + i.getUrl() + ", GroupName : " + i.getGroupName()
 					+ ", Username : " + i.getUserName() + ", Password : " + i.getPassword()));
 		} else
-			LOGGER.info("Enter the correct Group Name .......!!!!!!!!");
+			LOGGER.info("Enter the correct Groupname .......!!!!!!!!");
 
 	}
 }

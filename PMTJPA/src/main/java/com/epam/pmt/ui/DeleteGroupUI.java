@@ -20,10 +20,9 @@ public class DeleteGroupUI {
 	public void deleteGroup() {
 		@SuppressWarnings("resource")
 		Scanner input = new Scanner(System.in);
-		LOGGER.info("Enter the GroupName ");
+		LOGGER.info("Enter the Groupname ");
 		String groupname = input.nextLine();
-		boolean status = accountOperations.deleteGroup(groupname);
-		if (status)
+		if (accountOperations.deleteGroup(groupname))
 			LOGGER.info("Group Deleted Successfully..........!!!!!!");
 		else
 			LOGGER.info("Group not found.........!!!!!!!!!!!");

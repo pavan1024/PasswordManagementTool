@@ -66,7 +66,7 @@ public class AccountOperations {
 		return status;
 	}
 
-	public boolean updateGroupName(String groupName, String newGroupname) {
-		return this.accountsDBOperations.modifyGroup(groupName, newGroupname);
+	public boolean updateGroupName(String currentGroupname, String newGroupname) {
+		return this.accountsDBOperations.modifyGroup(currentGroupname, newGroupname);
 	}
 }

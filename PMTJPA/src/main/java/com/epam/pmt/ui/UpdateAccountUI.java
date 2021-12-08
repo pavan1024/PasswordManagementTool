@@ -22,7 +22,7 @@ public class UpdateAccountUI {
 	static Scanner input = new Scanner(System.in);
 
 	public void updateAccountDetails() {
-		// checks whether the list is empty or not
+
 		LOGGER.info("Enter your choice");
 		LOGGER.info("1)update username");
 		LOGGER.info("2)update password");
@@ -37,7 +37,7 @@ public class UpdateAccountUI {
 		switch (choice) {
 		case "1":
 			if (found) {
-				updateUserName(url);
+				updateUsername(url);
 			} else {
 				LOGGER.info("Url Not Found...!!!!!!!!!!");
 			}
@@ -54,9 +54,10 @@ public class UpdateAccountUI {
 		}
 	}
 
-	public void updateUserName(String url) {
+	public void updateUsername(String url) {
 		LOGGER.info("Enter New Username ");
 		String newUsername = input.nextLine();
+
 		accountOperations.updateUserName(url, newUsername);
 		LOGGER.info("Username Updated Successfully.........!!!!!!");
 	}
@@ -64,8 +65,7 @@ public class UpdateAccountUI {
 	public void updatePassword(String url) {
 		LOGGER.info("Enter New Password ");
 		String newPassword = input.nextLine();
-		boolean flag = validation.isValidPassword(newPassword);
-		if (flag) {
+		if (validation.isValidPassword(newPassword)) {
 			accountOperations.updatePassword(url, newPassword);
 			LOGGER.info("Password Updated Successfully........!!!!!!!!!!! ");
 		} else

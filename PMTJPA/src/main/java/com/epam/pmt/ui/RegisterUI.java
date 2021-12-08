@@ -24,7 +24,7 @@ public class RegisterUI {
 		LOGGER.info("(Note) : Password Should be atleast 1 UpperCase, 1 LowerCase , 1 Number, 1 Special Character");
 		String password = input.next();
 
-		boolean registered = register.register(username, password);
+		boolean registered = register.registerAccount(username, password);
 		if (registered) {
 			LOGGER.info("Account Registered Successfully......!!!!!!!!!!!!");
 		} else {

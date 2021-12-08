@@ -18,10 +18,10 @@ public class DeleteAccountUI {
 	public void deleteAccount() {
 			@SuppressWarnings("resource")
 			Scanner input = new Scanner(System.in);
+			
 			LOGGER.info("Enter the URL ");
 			String url = input.nextLine();
-			boolean found=this.accountOperations.deleteAccount(url);
-			if(found)
+			if(accountOperations.deleteAccount(url))
 				LOGGER.info("Account Deleted Successfully...........!!!!!!");
 			else 
 				LOGGER.info("URL Not Found....!!!!");

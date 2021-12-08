@@ -20,21 +20,18 @@ public class UpdateGroupNameUI {
 	public void updateGroupName() {
 		@SuppressWarnings("resource")
 		Scanner input = new Scanner(System.in);
-		LOGGER.info("Enter the Group Name ");
-		String groupname = input.nextLine();
+		LOGGER.info("Enter the current Groupname ");
+		String currentGroupname = input.nextLine();
 
-		boolean found = accountOperations.checkIfGroupExists(groupname);
-		updateIfGroupExists(input, groupname, found);
-	}
-
-	private void updateIfGroupExists(Scanner input, String groupname, boolean found) {
-		if (found) {
-			LOGGER.info("Enter the New Group Name ");
+		
+		if (accountOperations.checkIfGroupExists(currentGroupname)) {
+			LOGGER.info("Enter the New Groupname ");
 			String newGroupname = input.nextLine();
-			accountOperations.updateGroupName(groupname, newGroupname);
-			LOGGER.debug("Group Name Updated Successfully");
+			accountOperations.updateGroupName(currentGroupname, newGroupname);
+			LOGGER.debug("Groupname Updated Successfully");
 		} else {
 			LOGGER.info("Group Not Found");
 		}
 	}
+
 }

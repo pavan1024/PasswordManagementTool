@@ -11,7 +11,7 @@ public class Register {
 	@Autowired
 	Validation validation;
 
-	public boolean register(String username, String password) {
+	public boolean registerAccount(String username, String password) {
 		boolean status = false;
 		if (validation.isValidPassword(password)) {
 			MasterOperations.createMaster(username, password);

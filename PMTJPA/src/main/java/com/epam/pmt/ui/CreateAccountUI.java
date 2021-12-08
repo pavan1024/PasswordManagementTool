@@ -25,13 +25,14 @@ public class CreateAccountUI {
 		LOGGER.info("Enter URL");
 		LOGGER.info("(Note) : Url must start with 'https://'");
 		String url = input.nextLine();
-		boolean valid = validation.isValidURL(url);
-		if (valid) {
+		
+		if (validation.isValidURL(url)) {
 			LOGGER.info("Enter Username ");
 			String username = input.nextLine();
 			LOGGER.info("Enter Password ");
 			LOGGER.info("(Note) : Password Should be atleast 1 UpperCase, 1 LowerCase , 1 Number, 1 Special Character");
 			String password = input.nextLine();
+			
 			if (validation.isValidPassword(password)) {
 				LOGGER.info("Enter Group Name ");
 				String groupname = input.nextLine();
@@ -40,6 +41,7 @@ public class CreateAccountUI {
 			} else {
 				LOGGER.info("Enter the password with atleast 1 UpperCase, 1 LowerCase , 1 Number, 1 Special Character");
 			}
+		
 		} else {
 			LOGGER.info("Enter a Valid url ");
 		}
