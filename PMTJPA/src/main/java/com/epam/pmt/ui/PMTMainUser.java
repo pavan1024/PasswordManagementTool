@@ -19,6 +19,7 @@ public class PMTMainUser {
 	public static void main(String[] args) {
 		ApplicationContext context = new AnnotationConfigApplicationContext(PMTMainUser.class);
 		loginUI = context.getBean(LoginUI.class);
+		registerUI = context.getBean(RegisterUI.class);
 		@SuppressWarnings("resource")
 		Scanner input = new Scanner(System.in);
 		String choice;

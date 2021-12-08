@@ -58,7 +58,7 @@ public class UpdateAccountUI {
 		LOGGER.info("Enter New Username ");
 		String newUsername = input.nextLine();
 
-		accountOperations.updateUserName(url, newUsername);
+		accountOperations.updateUsername(url, newUsername);
 		LOGGER.info("Username Updated Successfully.........!!!!!!");
 	}
 

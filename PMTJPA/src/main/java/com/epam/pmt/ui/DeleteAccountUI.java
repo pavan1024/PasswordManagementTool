@@ -21,10 +21,13 @@ public class DeleteAccountUI {
 			
 			LOGGER.info("Enter the URL ");
 			String url = input.nextLine();
-			if(accountOperations.deleteAccount(url))
-				LOGGER.info("Account Deleted Successfully...........!!!!!!");
-			else 
-				LOGGER.info("URL Not Found....!!!!");
+			if(accountOperations.checkUrl(url))
+				if(accountOperations.deleteAccount(url))
+					LOGGER.info("Account Deleted Successfully...........!!!!!!");
+				else 
+					LOGGER.info("URL Not Found....!!!!");
+			else
+				LOGGER.info("URL Not Exists....!!!!");
 
 	}
 

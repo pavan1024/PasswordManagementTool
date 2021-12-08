@@ -3,14 +3,15 @@ package com.epam.pmt.dao;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+import org.springframework.stereotype.Component;
+@Component
 public class SingletonEntityManagerFactory {
-	static EntityManagerFactory entityManagerFactory;
+	EntityManagerFactory entityManagerFactory;
 
 	private SingletonEntityManagerFactory() {
-
 	}
 
-	public static EntityManagerFactory getEntityManagerFactory() {
+	public EntityManagerFactory getEntityManagerFactory() {
 		if (entityManagerFactory == null) {
 			entityManagerFactory = Persistence.createEntityManagerFactory("pmt-database");
 		}

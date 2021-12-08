@@ -8,6 +8,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
@@ -15,13 +16,16 @@ import com.epam.pmt.entities.*;
 
 @Component
 @Primary
-public class AccountsDBOperationsImpl implements AccountsDBOperations {
+public class AccountDAOImpl implements AccountDAO{
 	EntityManagerFactory factory;
 	EntityManager manager;
+	@Autowired
+	SingletonEntityManagerFactory singletonEntityManagerFactory;
 
+	@Override
 	public boolean createAccount(Account account) {
 		boolean status = false;
-		factory = SingletonEntityManagerFactory.getEntityManagerFactory();
+		factory = singletonEntityManagerFactory.getEntityManagerFactory();
 		manager = factory.createEntityManager();
 		List<Account> list = manager.find(Master.class, MasterProvider.getMaster().getUsername()).getAccounts();
 		Master master = MasterProvider.getMaster();
@@ -33,6 +37,7 @@ public class AccountsDBOperationsImpl implements AccountsDBOperations {
 			manager.getTransaction().commit();
 			status = true;
 		} catch (IllegalStateException e) {
+			status = false;
 			manager.getTransaction().rollback();
 		} finally {
 			manager.close();
@@ -40,39 +45,42 @@ public class AccountsDBOperationsImpl implements AccountsDBOperations {
 		return status;
 
 	}
-
-	public String readPassword(String url) {
-		String password = "";
-		factory = SingletonEntityManagerFactory.getEntityManagerFactory();
-		manager = factory.createEntityManager();
-		Master master = MasterProvider.getMaster();
-		Query query = manager.createQuery("select a from Account a where a.url=?1 and a.master=?2");
-		query.setParameter(1, url);
-		query.setParameter(2, master);
-		List<Account> accounts = query.getResultList();
-		try {
-			Account account = accounts.get(0);
-			password = account.getPassword();
-		} catch (IndexOutOfBoundsException | IllegalStateException ex) {
-			manager.getTransaction().rollback();
-		} finally {
-			manager.close();
-		}
-
-		return password;
+	
+	@Override
+	public String readPassword(Account account) {
+//		String password = "";
+//		factory = singletonEntityManagerFactory.getEntityManagerFactory();
+//		manager = factory.createEntityManager();
+//		Master master = MasterProvider.getMaster();
+//		Query query = manager.createQuery("select a from Account a where a.url=?1 and a.master=?2");
+//		query.setParameter(1, url);
+//		query.setParameter(2, master);
+//		List<Account> accounts = query.getResultList();
+//		try {
+//			Account account = accounts.get(0);
+//			password = account.getPassword();
+//		} catch (IndexOutOfBoundsException | IllegalStateException ex) {
+//			manager.getTransaction().rollback();
+//		} finally {
+//			manager.close();
+//		}
+//
+//		return password;
+		return account.getPassword();
 	}
 
-	public List<Account> displayByGroup(String groupName) {
+	@Override
+	public List<Account> displayByGroup(String groupname) {
 		List<Account> groupAccounts = null;
-		factory = SingletonEntityManagerFactory.getEntityManagerFactory();
+		factory = singletonEntityManagerFactory.getEntityManagerFactory();
 		manager = factory.createEntityManager();
 		Master master = MasterProvider.getMaster();
 		List<Account> accounts = manager.find(Master.class, master.getUsername()).getAccounts().stream()
-				.filter(i -> i.getGroupName().equals(groupName)).collect(Collectors.toList());
+				.filter(i -> i.getGroupName().equals(groupname)).collect(Collectors.toList());
 
 		try {
-			Query query = manager.createQuery("select u from Account u where u.groupName=?1");
-			query.setParameter(1, groupName);
+			Query query = manager.createQuery("select u from Account u where u.groupname=?1");
+			query.setParameter(1, groupname);
 			groupAccounts = query.getResultList();
 		} catch (IllegalStateException e) {
 			manager.getTransaction().rollback();
@@ -82,9 +90,10 @@ public class AccountsDBOperationsImpl implements AccountsDBOperations {
 		return groupAccounts;
 	}
 
+	@Override
 	public boolean deleteAccount(String url) {
 		boolean status = false;
-		factory = SingletonEntityManagerFactory.getEntityManagerFactory();
+		factory = singletonEntityManagerFactory.getEntityManagerFactory();
 		manager = factory.createEntityManager();
 		Query query = manager.createQuery("select a from Account a where a.url=?1 and a.master=?2");
 		query.setParameter(1, url);
@@ -110,9 +119,9 @@ public class AccountsDBOperationsImpl implements AccountsDBOperations {
 	}
 
 	@Override
-	public boolean updateAccountUserName(String url, String newUserName) {
+	public boolean updateAccountUsername(String url, String newUsername) {
 		boolean status = false;
-		factory = SingletonEntityManagerFactory.getEntityManagerFactory();
+		factory = singletonEntityManagerFactory.getEntityManagerFactory();
 		manager = factory.createEntityManager();
 		Master master = MasterProvider.getMaster();
 		Query query = manager.createQuery("select a from Account a where a.url=?1 and a.master=?2");
@@ -122,7 +131,7 @@ public class AccountsDBOperationsImpl implements AccountsDBOperations {
 		try {
 
 			if (!accounts.isEmpty()) {
-				accounts.stream().forEach(i -> i.setUserName(newUserName));
+				accounts.stream().forEach(i -> i.setUserName(newUsername));
 				master.setAccounts(accounts);
 				manager.getTransaction().begin();
 				manager.merge(master);
@@ -136,10 +145,11 @@ public class AccountsDBOperationsImpl implements AccountsDBOperations {
 		}
 		return status;
 	}
-
+	
+	@Override
 	public boolean updateAccountPassword(String url, String newPassword) {
 		boolean status = false;
-		factory = SingletonEntityManagerFactory.getEntityManagerFactory();
+		factory = singletonEntityManagerFactory.getEntityManagerFactory();
 		manager = factory.createEntityManager();
 		Master master = MasterProvider.getMaster();
 		Query query = manager.createQuery("select a from Account a where a.url=?1 and a.master=?2");
@@ -164,48 +174,21 @@ public class AccountsDBOperationsImpl implements AccountsDBOperations {
 		return status;
 	}
 
-	public boolean checkIfURLExists(String url) {
-		boolean status = false;
-		factory = SingletonEntityManagerFactory.getEntityManagerFactory();
-		manager = factory.createEntityManager();
-		Account account = manager.find(Account.class, url);
-		if (account.getUrl().equals(url)) {
-			status = true;
-		}
-		return status;
-
-	}
-
-	@Transactional
-	public boolean checkIfGroupExists(String groupName) {
-		boolean status = false;
-		factory = SingletonEntityManagerFactory.getEntityManagerFactory();
-		manager = factory.createEntityManager();
-		Master master = MasterProvider.getMaster();
-		Query query = manager.createQuery("select a from Account a where a.groupName=?1 and a.master=?2");
-		query.setParameter(1, groupName);
-		query.setParameter(2, master);
-		List<Account> accounts = query.getResultList();
-		if (!accounts.isEmpty()) {
-			status = true;
-		}
-		return status;
-	}
 
 	@Override
-	public boolean modifyGroup(String groupName, String newGroupName) {
+	public boolean modifyGroup(String groupname, String newGroupname) {
 		boolean status = false;
-		factory = SingletonEntityManagerFactory.getEntityManagerFactory();
+		factory = singletonEntityManagerFactory.getEntityManagerFactory();
 		manager = factory.createEntityManager();
 		Master master = MasterProvider.getMaster();
-		Query query = manager.createQuery("select a from Account a where a.groupName=?1 and a.master=?2");
-		query.setParameter(1, groupName);
+		Query query = manager.createQuery("select a from Account a where a.groupname=?1 and a.master=?2");
+		query.setParameter(1, groupname);
 		query.setParameter(2, master);
 		List<Account> accounts = query.getResultList();
 
 		try {
 			if (!accounts.isEmpty()) {
-				accounts.stream().forEach(i -> i.setGroupName(newGroupName));
+				accounts.stream().forEach(i -> i.setGroupName(newGroupname));
 				master.setAccounts(accounts);
 				manager.getTransaction().begin();
 				manager.merge(master);
@@ -219,14 +202,14 @@ public class AccountsDBOperationsImpl implements AccountsDBOperations {
 		}
 		return status;
 	}
-
-	public boolean deleteGroup(String groupName) {
+	@Override
+	public boolean deleteGroup(String groupname) {
 		boolean status = false;
-		factory = SingletonEntityManagerFactory.getEntityManagerFactory();
+		factory = singletonEntityManagerFactory.getEntityManagerFactory();
 		manager = factory.createEntityManager();
 		Master master = MasterProvider.getMaster();
-		Query query = manager.createQuery("select a from Account a where a.groupName=?1 and a.master=?2");
-		query.setParameter(1, groupName);
+		Query query = manager.createQuery("select a from Account a where a.groupname=?1 and a.master=?2");
+		query.setParameter(1, groupname);
 		query.setParameter(2, master);
 		List<Account> accounts = query.getResultList();
 		try {

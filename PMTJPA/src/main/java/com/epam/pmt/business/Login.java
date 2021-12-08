@@ -3,6 +3,7 @@ package com.epam.pmt.business;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.epam.pmt.dao.MasterOperations;
@@ -12,12 +13,16 @@ import com.epam.pmt.entities.Master;
 
 @Component
 public class Login {
-	static EntityManagerFactory factory;
-	static EntityManager manager;
+	@Autowired
+	MasterOperations masterOperations;
+	@Autowired
+	SingletonEntityManagerFactory singletonEntityManagerFactory;
+	EntityManagerFactory factory;
+	EntityManager manager;
 
 	public boolean login(String userName, String password) {
 		boolean status = false;
-		factory = SingletonEntityManagerFactory.getEntityManagerFactory();
+		factory = singletonEntityManagerFactory.getEntityManagerFactory();
 		manager = factory.createEntityManager();
 		if (password.equals(manager.find(Master.class, userName).getPassword())) {
 			MasterProvider.setMaster(userName, password);
@@ -27,7 +32,7 @@ public class Login {
 	}
 
 	public boolean checkIfUserNameExists(String userName) {
-		return MasterOperations.checkIfMasterExists(userName);
+		return masterOperations.checkIfMasterExists(userName);
 	}
 
 }

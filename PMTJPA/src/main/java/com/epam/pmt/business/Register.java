@@ -7,14 +7,15 @@ import com.epam.pmt.dao.MasterOperations;
 
 @Component
 public class Register {
-
+	@Autowired
+	MasterOperations masterOperations;
 	@Autowired
 	Validation validation;
 
 	public boolean registerAccount(String username, String password) {
 		boolean status = false;
 		if (validation.isValidPassword(password)) {
-			MasterOperations.createMaster(username, password);
+			masterOperations.createMaster(username, password);
 
 			status = true;
 		}

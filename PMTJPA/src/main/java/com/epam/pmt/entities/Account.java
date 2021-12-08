@@ -14,20 +14,20 @@ public class Account {
 	@Id
 	private String url;
 	@Column
-	private String userName;
+	private String username;
 	@Column
 	private String password;
-	private String groupName;
+	private String groupname;
 	@ManyToOne
 	@JoinColumn(name = "master_id")
 	private Master master;
 
 	public String getGroupName() {
-		return groupName;
+		return groupname;
 	}
 
 	public void setGroupName(String groupName) {
-		this.groupName = groupName;
+		this.groupname = groupName;
 	}
 
 	public Master getMaster() {
@@ -47,11 +47,11 @@ public class Account {
 	}
 
 	public String getUserName() {
-		return userName;
+		return username;
 	}
 
 	public void setUserName(String userName) {
-		this.userName = userName;
+		this.username = userName;
 	}
 
 	public String getPassword() {

@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.epam.pmt.entities.Account;
@@ -13,13 +14,14 @@ import com.epam.pmt.entities.Master;
 
 @Component
 public class MasterOperations {
+		@Autowired
+		SingletonEntityManagerFactory singletonEntityManagerFactory;
+		EntityManagerFactory factory;
+		EntityManager manager;
 
-	static EntityManagerFactory factory;
-	static EntityManager manager;
-
-	public static boolean createMaster(String userName, String password) {
+	public boolean createMaster(String userName, String password) {
 		boolean status = false;
-		factory = SingletonEntityManagerFactory.getEntityManagerFactory();
+		factory = singletonEntityManagerFactory.getEntityManagerFactory();
 		manager = factory.createEntityManager();
 		Master master = new Master();
 		master.setUsername(userName);
@@ -42,9 +44,9 @@ public class MasterOperations {
 
 	}
 
-	public static boolean checkIfMasterExists(String userName) {
+	public boolean checkIfMasterExists(String userName) {
 		boolean status = false;
-		factory = SingletonEntityManagerFactory.getEntityManagerFactory();
+		factory = singletonEntityManagerFactory.getEntityManagerFactory();
 		manager = factory.createEntityManager();
 		try {
 			Master account = manager.find(Master.class, userName);
