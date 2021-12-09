@@ -35,24 +35,6 @@ public class AccountOperations {
 
 	}
 	
-	public boolean checkIfGroupExists(String groupname) {		
-		boolean status=false;
-		factory = singletonEntityManagerFactory.getEntityManagerFactory();
-		manager = factory.createEntityManager();
-		List<Account> accounts = manager.find(Master.class, MasterProvider.getMaster().getUsername()).getAccounts();
-		try {
-		List<Account> groupAccounts=accounts.stream().filter(i->i.getGroupname().equals(groupname)).collect(Collectors.toList());
-		if(!groupAccounts.isEmpty())
-			status=true;
-		}catch(IllegalStateException e) {
-			e.getStackTrace();
-		}finally {
-			manager.close();
-		}
-		
-		return status;
-		
-	}
 	
 	public String readPassword(String url) {
 		String password="";
@@ -95,10 +77,6 @@ public class AccountOperations {
 	public boolean deleteAccount(String url) {
 		return accountDAO.deleteAccount(url);
 	}
-
-	public boolean deleteGroup(String groupname) {
-		return accountDAO.deleteGroup(groupname);
-	}
 	
 
 	public boolean updateUsername(String url, String newUsername) {
@@ -110,13 +88,5 @@ public class AccountOperations {
 	public boolean updatePassword(String url, String newPassword) {
 		return this.accountDAO.updateAccountPassword(url, newPassword);
 
-	}
-
-	public boolean updateGroupName(String currentGroupname, String newGroupname) {
-		return this.accountDAO.modifyGroup(currentGroupname, newGroupname);
-	}
-
-	public List<Account> groupDetails(String groupname) {
-		return this.accountDAO.displayByGroup(groupname);
 	}
 }

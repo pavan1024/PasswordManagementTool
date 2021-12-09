@@ -8,12 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.epam.pmt.business.AccountOperations;
+import com.epam.pmt.business.GroupOperations;
 import com.epam.pmt.ui.DeleteGroupUI;
 
 @Component
 public class DeleteGroupUI {
 	@Autowired
 	AccountOperations accountOperations;
+	@Autowired
+	GroupOperations groupOperations;
 	private static final Logger LOGGER = LogManager.getLogger(DeleteGroupUI.class);
 
 	public void deleteGroup() {
@@ -21,7 +24,7 @@ public class DeleteGroupUI {
 		Scanner input = new Scanner(System.in);
 		LOGGER.info("Enter the Groupname ");
 		String groupname = input.nextLine();
-		if (accountOperations.deleteGroup(groupname))
+		if (groupOperations.deleteGroup(groupname))
 			LOGGER.info("Group Deleted Successfully..........!!!!!!");
 		else
 			LOGGER.info("Group not found.........!!!!!!!!!!!");

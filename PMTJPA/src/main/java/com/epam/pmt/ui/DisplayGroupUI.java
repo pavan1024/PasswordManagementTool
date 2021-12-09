@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.epam.pmt.business.AccountOperations;
+import com.epam.pmt.business.GroupOperations;
 import com.epam.pmt.entities.Account;
 import com.epam.pmt.ui.DisplayGroupUI;
 
@@ -17,6 +18,8 @@ public class DisplayGroupUI {
 	private static final Logger LOGGER = LogManager.getLogger(DisplayGroupUI.class);
 	@Autowired
 	AccountOperations accountOperations;
+	@Autowired
+	GroupOperations groupOperations;
 
 	public void displayGroupAccountDetails() {
 		@SuppressWarnings("resource")
@@ -24,8 +27,8 @@ public class DisplayGroupUI {
 		LOGGER.info("Enter the Groupname ");
 		String groupname = input.nextLine();
 
-		if (accountOperations.checkIfGroupExists(groupname)) {
-			List<Account> accounts = accountOperations.groupDetails(groupname);
+		if (groupOperations.checkIfGroupExists(groupname)) {
+			List<Account> accounts = groupOperations.groupDetails(groupname);
 			accounts.forEach(i -> LOGGER.info("URL : " + i.getUrl() + ", GroupName : " + i.getGroupname()
 					+ ", Username : " + i.getUserName() + ", Password : " + i.getPassword()));
 		} else
