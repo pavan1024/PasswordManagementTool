@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.epam.pmt.business.AccountOperations;
-//import com.epam.pmt.business.UpdateGroupName;
 import com.epam.pmt.ui.UpdateGroupNameUI;
 
 @Component

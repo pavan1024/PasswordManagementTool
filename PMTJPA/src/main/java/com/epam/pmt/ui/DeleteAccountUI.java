@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.epam.pmt.business.AccountOperations;
-//import com.epam.pmt.business.DeleteAccount;
 import com.epam.pmt.ui.DeleteAccountUI;
 @Component
 public class DeleteAccountUI {
@@ -21,13 +20,17 @@ public class DeleteAccountUI {
 			
 			LOGGER.info("Enter the URL ");
 			String url = input.nextLine();
-			if(accountOperations.checkUrl(url))
-				if(accountOperations.deleteAccount(url))
+			if(accountOperations.checkUrl(url)) {
+				if(accountOperations.deleteAccount(url)) {
 					LOGGER.info("Account Deleted Successfully...........!!!!!!");
-				else 
+				}
+				else { 
 					LOGGER.info("URL Not Found....!!!!");
-			else
+				}
+			}
+			else {
 				LOGGER.info("URL Not Exists....!!!!");
+			}
 
 	}
 

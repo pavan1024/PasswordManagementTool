@@ -22,11 +22,11 @@ public class Account {
 	@JoinColumn(name = "master_id")
 	private Master master;
 
-	public String getGroupName() {
+	public String getGroupname() {
 		return groupname;
 	}
 
-	public void setGroupName(String groupName) {
+	public void setGroupname(String groupName) {
 		this.groupname = groupName;
 	}
 

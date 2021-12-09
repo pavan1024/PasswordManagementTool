@@ -9,6 +9,7 @@ import javax.persistence.EntityManagerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.epam.pmt.business.SingletonEntityManagerFactory;
 import com.epam.pmt.entities.Account;
 import com.epam.pmt.entities.Master;
 
@@ -54,7 +55,7 @@ public class MasterOperations {
 				status = true;
 			}
 		} catch (Exception e) {
-			System.out.println("Register an Account before Login");
+			e.getStackTrace();
 		}
 		return status;
 	}

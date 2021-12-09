@@ -27,8 +27,10 @@ public class ReadPasswordUI {
 
 	private void displaypassword(String url) {
 		try {
-			if (!accountOperations.readPassword(url).equals(""))
-				LOGGER.info("Account Password : " + accountOperations.readPassword(url));
+			if (!accountOperations.readPassword(url).equals("")) {
+				if(accountOperations.readPassword(url)!=null)
+					LOGGER.info("Account Password : {}" ,accountOperations.readPassword(url));
+			}
 			else
 				LOGGER.info("URL not found");
 		} catch (IndexOutOfBoundsException e) {

@@ -26,7 +26,7 @@ public class DisplayGroupUI {
 
 		if (accountOperations.checkIfGroupExists(groupname)) {
 			List<Account> accounts = accountOperations.groupDetails(groupname);
-			accounts.forEach(i -> LOGGER.info("URL : " + i.getUrl() + ", GroupName : " + i.getGroupName()
+			accounts.forEach(i -> LOGGER.info("URL : " + i.getUrl() + ", GroupName : " + i.getGroupname()
 					+ ", Username : " + i.getUserName() + ", Password : " + i.getPassword()));
 		} else
 			LOGGER.info("Enter the correct Groupname .......!!!!!!!!");

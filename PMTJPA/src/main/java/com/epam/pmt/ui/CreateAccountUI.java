@@ -36,10 +36,12 @@ public class CreateAccountUI {
 			if (validation.isValidPassword(password)) {
 				LOGGER.info("Enter Group Name ");
 				String groupname = input.nextLine();
+				
 				if(accountOperations.createAccount(url, username, password, groupname))
 					LOGGER.info("Account Added Succesfully...........!!!!!!!");
 				else
 					LOGGER.info("Account Already Exists...........!!!!!!!");
+				
 			} else
 				LOGGER.info("Enter the password with atleast 1 UpperCase, 1 LowerCase , 1 Number, 1 Special Character");
 		

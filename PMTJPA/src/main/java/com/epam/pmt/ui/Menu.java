@@ -44,7 +44,9 @@ public class Menu {
 			Task task = taskFactory.createTask(choice);
 			Optional<Task> optional = Optional.ofNullable(task);
 			try {
+				if(optional.isPresent()) {
 				optional.get().doTask();
+				}
 			} catch (NoSuchElementException e) {
 				if (choice != 0)
 

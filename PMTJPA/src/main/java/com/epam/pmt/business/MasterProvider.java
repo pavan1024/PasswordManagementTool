@@ -1,4 +1,4 @@
-package com.epam.pmt.dao;
+package com.epam.pmt.business;
 
 import org.springframework.stereotype.Component;
 

@@ -1,6 +1,8 @@
 package com.epam.pmt.business;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
@@ -9,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.epam.pmt.dao.AccountDAO;
-import com.epam.pmt.dao.MasterProvider;
-import com.epam.pmt.dao.SingletonEntityManagerFactory;
 import com.epam.pmt.entities.Account;
 import com.epam.pmt.entities.Master;
 
@@ -25,28 +25,33 @@ public class AccountOperations {
 	EntityManagerFactory factory;
 	EntityManager manager;
 	
-	public boolean checkIfGroupExists(String groupname) {
-		boolean status = false;
-		factory = singletonEntityManagerFactory.getEntityManagerFactory();
-		manager = factory.createEntityManager();
-		Master master = masterProvider.getMaster();
-		Query query = manager.createQuery("select a from Account a where a.groupname=?1 and a.master=?2");
-		query.setParameter(1, groupname);
-		query.setParameter(2, master);
-		List<Account> accounts = query.getResultList();
-		if (!accounts.isEmpty())
-			status = true;
-		return status;
-	}
-	
 	public boolean createAccount(String url, String username, String password, String groupname) {
 		Account account = new Account();
 		account.setUrl(url);
 		account.setUserName(username);
 		account.setPassword(password);
-		account.setGroupName(groupname);
+		account.setGroupname(groupname);
 		return accountDAO.createAccount(account);
 
+	}
+	
+	public boolean checkIfGroupExists(String groupname) {		
+		boolean status=false;
+		factory = singletonEntityManagerFactory.getEntityManagerFactory();
+		manager = factory.createEntityManager();
+		List<Account> accounts = manager.find(Master.class, MasterProvider.getMaster().getUsername()).getAccounts();
+		try {
+		List<Account> groupAccounts=accounts.stream().filter(i->i.getGroupname().equals(groupname)).collect(Collectors.toList());
+		if(!groupAccounts.isEmpty())
+			status=true;
+		}catch(IllegalStateException e) {
+			e.getStackTrace();
+		}finally {
+			manager.close();
+		}
+		
+		return status;
+		
 	}
 	
 	public String readPassword(String url) {
@@ -71,14 +76,17 @@ public class AccountOperations {
 	public boolean checkUrl(String url) {
 		boolean status = false;
 		factory = singletonEntityManagerFactory.getEntityManagerFactory();
-		manager = factory.createEntityManager();
-		Master master = masterProvider.getMaster();
-		Query query = manager.createQuery("select a from Account a where a.url=?1 and a.master=?2");
-		query.setParameter(1, url);
-		query.setParameter(2, master);
-		List<Account> accounts = query.getResultList();
-		if (!accounts.isEmpty())
-			status = true;
+		manager = factory.createEntityManager();	
+		Account account=manager.find(Account.class, url);
+		try {
+			if(account!=null) {
+				status =true;
+			}
+		}catch(IllegalStateException e) {
+			e.getStackTrace();
+		}finally {
+			manager.close();
+		}
 		return status;
 	}
 
@@ -94,6 +102,7 @@ public class AccountOperations {
 	
 
 	public boolean updateUsername(String url, String newUsername) {
+		
 		return this.accountDAO.updateAccountUsername(url, newUsername);
 
 	}

@@ -1,17 +1,17 @@
 package com.epam.pmt.dao;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
-import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
+import com.epam.pmt.business.MasterProvider;
+import com.epam.pmt.business.SingletonEntityManagerFactory;
 import com.epam.pmt.entities.*;
 
 @Component
@@ -22,6 +22,7 @@ public class AccountDAOImpl implements AccountDAO{
 	@Autowired
 	SingletonEntityManagerFactory singletonEntityManagerFactory;
 
+	String jpqlQuery= "select a from Account a where a.url=?1 and a.master=?2";
 	@Override
 	public boolean createAccount(Account account) {
 		boolean status = false;
@@ -37,7 +38,6 @@ public class AccountDAOImpl implements AccountDAO{
 			manager.getTransaction().commit();
 			status = true;
 		} catch (IllegalStateException e) {
-			status = false;
 			manager.getTransaction().rollback();
 		} finally {
 			manager.close();
@@ -46,38 +46,12 @@ public class AccountDAOImpl implements AccountDAO{
 
 	}
 	
-	@Override
-	public String readPassword(Account account) {
-//		String password = "";
-//		factory = singletonEntityManagerFactory.getEntityManagerFactory();
-//		manager = factory.createEntityManager();
-//		Master master = MasterProvider.getMaster();
-//		Query query = manager.createQuery("select a from Account a where a.url=?1 and a.master=?2");
-//		query.setParameter(1, url);
-//		query.setParameter(2, master);
-//		List<Account> accounts = query.getResultList();
-//		try {
-//			Account account = accounts.get(0);
-//			password = account.getPassword();
-//		} catch (IndexOutOfBoundsException | IllegalStateException ex) {
-//			manager.getTransaction().rollback();
-//		} finally {
-//			manager.close();
-//		}
-//
-//		return password;
-		return account.getPassword();
-	}
 
 	@Override
 	public List<Account> displayByGroup(String groupname) {
 		List<Account> groupAccounts = null;
 		factory = singletonEntityManagerFactory.getEntityManagerFactory();
 		manager = factory.createEntityManager();
-		Master master = MasterProvider.getMaster();
-		List<Account> accounts = manager.find(Master.class, master.getUsername()).getAccounts().stream()
-				.filter(i -> i.getGroupName().equals(groupname)).collect(Collectors.toList());
-
 		try {
 			Query query = manager.createQuery("select u from Account u where u.groupname=?1");
 			query.setParameter(1, groupname);
@@ -95,7 +69,8 @@ public class AccountDAOImpl implements AccountDAO{
 		boolean status = false;
 		factory = singletonEntityManagerFactory.getEntityManagerFactory();
 		manager = factory.createEntityManager();
-		Query query = manager.createQuery("select a from Account a where a.url=?1 and a.master=?2");
+		
+		Query query = manager.createQuery(jpqlQuery);
 		query.setParameter(1, url);
 		query.setParameter(2, MasterProvider.getMaster());
 		List<Account> accounts = query.getResultList();
@@ -124,7 +99,7 @@ public class AccountDAOImpl implements AccountDAO{
 		factory = singletonEntityManagerFactory.getEntityManagerFactory();
 		manager = factory.createEntityManager();
 		Master master = MasterProvider.getMaster();
-		Query query = manager.createQuery("select a from Account a where a.url=?1 and a.master=?2");
+		Query query = manager.createQuery(jpqlQuery);
 		query.setParameter(1, url);
 		query.setParameter(2, master);
 		List<Account> accounts = query.getResultList();
@@ -152,7 +127,7 @@ public class AccountDAOImpl implements AccountDAO{
 		factory = singletonEntityManagerFactory.getEntityManagerFactory();
 		manager = factory.createEntityManager();
 		Master master = MasterProvider.getMaster();
-		Query query = manager.createQuery("select a from Account a where a.url=?1 and a.master=?2");
+		Query query = manager.createQuery(jpqlQuery);
 		query.setParameter(1, url);
 		query.setParameter(2, master);
 		List<Account> accounts = query.getResultList();
@@ -173,7 +148,10 @@ public class AccountDAOImpl implements AccountDAO{
 		}
 		return status;
 	}
-
+	@Override
+	public String readPassword(Account account) {
+		return account.getPassword();
+	}
 
 	@Override
 	public boolean modifyGroup(String groupname, String newGroupname) {
@@ -188,7 +166,7 @@ public class AccountDAOImpl implements AccountDAO{
 
 		try {
 			if (!accounts.isEmpty()) {
-				accounts.stream().forEach(i -> i.setGroupName(newGroupname));
+				accounts.stream().forEach(i -> i.setGroupname(newGroupname));
 				master.setAccounts(accounts);
 				manager.getTransaction().begin();
 				manager.merge(master);
