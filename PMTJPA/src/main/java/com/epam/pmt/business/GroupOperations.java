@@ -9,13 +9,14 @@ import javax.persistence.EntityManagerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.epam.pmt.dao.AccountDAO;
+import com.epam.pmt.dao.AccountDao;
+import com.epam.pmt.dao.GroupDao;
 import com.epam.pmt.entities.Account;
 import com.epam.pmt.entities.Master;
 @Component
 public class GroupOperations {
 	@Autowired
-	AccountDAO accountDAO;
+	GroupDao groupDao;
 	@Autowired
 	SingletonEntityManagerFactory singletonEntityManagerFactory;
 	@Autowired
@@ -42,14 +43,14 @@ public class GroupOperations {
 		
 	}
 	public boolean updateGroupName(String currentGroupname, String newGroupname) {
-		return this.accountDAO.modifyGroup(currentGroupname, newGroupname);
+		return groupDao.modifyGroup(currentGroupname, newGroupname);
 	}
 
 	public List<Account> groupDetails(String groupname) {
-		return this.accountDAO.displayByGroup(groupname);
+		return groupDao.displayByGroup(groupname);
 	}
 	
 	public boolean deleteGroup(String groupname) {
-		return accountDAO.deleteGroup(groupname);
+		return groupDao.deleteGroup(groupname);
 	}
 }

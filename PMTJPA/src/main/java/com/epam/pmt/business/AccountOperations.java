@@ -10,14 +10,14 @@ import javax.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.epam.pmt.dao.AccountDAO;
+import com.epam.pmt.dao.AccountDao;
 import com.epam.pmt.entities.Account;
 import com.epam.pmt.entities.Master;
 
 @Component
 public class AccountOperations {
 	@Autowired
-	AccountDAO accountDAO;
+	AccountDao accountDao;
 	@Autowired
 	SingletonEntityManagerFactory singletonEntityManagerFactory;
 	@Autowired
@@ -31,7 +31,7 @@ public class AccountOperations {
 		account.setUserName(username);
 		account.setPassword(password);
 		account.setGroupname(groupname);
-		return accountDAO.createAccount(account);
+		return accountDao.createAccount(account);
 
 	}
 	
@@ -46,7 +46,7 @@ public class AccountOperations {
 		query.setParameter(2, master);
 		List<Account> accounts = query.getResultList();
 		try {
-			password = accountDAO.readPassword(accounts.get(0));
+			password = accountDao.readPassword(accounts.get(0));
 		} catch (IndexOutOfBoundsException | IllegalStateException ex) {
 			manager.getTransaction().rollback();
 		} finally {
@@ -75,18 +75,18 @@ public class AccountOperations {
 	
 	
 	public boolean deleteAccount(String url) {
-		return accountDAO.deleteAccount(url);
+		return accountDao.deleteAccount(url);
 	}
 	
 
 	public boolean updateUsername(String url, String newUsername) {
 		
-		return this.accountDAO.updateAccountUsername(url, newUsername);
+		return this.accountDao.updateAccountUsername(url, newUsername);
 
 	}
 
 	public boolean updatePassword(String url, String newPassword) {
-		return this.accountDAO.updateAccountPassword(url, newPassword);
+		return this.accountDao.updateAccountPassword(url, newPassword);
 
 	}
 }

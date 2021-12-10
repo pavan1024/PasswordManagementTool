@@ -16,7 +16,7 @@ import com.epam.pmt.entities.*;
 
 @Component
 @Primary
-public class AccountDAOImpl implements AccountDAO{
+public class AccountDaoImpl implements AccountDao{
 	EntityManagerFactory factory;
 	EntityManager manager;
 	@Autowired
@@ -47,22 +47,6 @@ public class AccountDAOImpl implements AccountDAO{
 	}
 	
 
-	@Override
-	public List<Account> displayByGroup(String groupname) {
-		List<Account> groupAccounts = null;
-		factory = singletonEntityManagerFactory.getEntityManagerFactory();
-		manager = factory.createEntityManager();
-		try {
-			Query query = manager.createQuery("select u from Account u where u.groupname=?1");
-			query.setParameter(1, groupname);
-			groupAccounts = query.getResultList();
-		} catch (IllegalStateException e) {
-			manager.getTransaction().rollback();
-		} finally {
-			manager.close();
-		}
-		return groupAccounts;
-	}
 
 	@Override
 	public boolean deleteAccount(String url) {
@@ -153,61 +137,5 @@ public class AccountDAOImpl implements AccountDAO{
 		return account.getPassword();
 	}
 
-	@Override
-	public boolean modifyGroup(String groupname, String newGroupname) {
-		boolean status = false;
-		factory = singletonEntityManagerFactory.getEntityManagerFactory();
-		manager = factory.createEntityManager();
-		Master master = MasterProvider.getMaster();
-		Query query = manager.createQuery("select a from Account a where a.groupname=?1 and a.master=?2");
-		query.setParameter(1, groupname);
-		query.setParameter(2, master);
-		List<Account> accounts = query.getResultList();
-
-		try {
-			if (!accounts.isEmpty()) {
-				accounts.stream().forEach(i -> i.setGroupname(newGroupname));
-				master.setAccounts(accounts);
-				manager.getTransaction().begin();
-				manager.merge(master);
-				manager.getTransaction().commit();
-				status = true;
-			}
-		} catch (IllegalStateException e) {
-			manager.getTransaction().rollback();
-		} finally {
-			manager.close();
-		}
-		return status;
-	}
-	@Override
-	public boolean deleteGroup(String groupname) {
-		boolean status = false;
-		factory = singletonEntityManagerFactory.getEntityManagerFactory();
-		manager = factory.createEntityManager();
-		Master master = MasterProvider.getMaster();
-		Query query = manager.createQuery("select a from Account a where a.groupname=?1 and a.master=?2");
-		query.setParameter(1, groupname);
-		query.setParameter(2, master);
-		List<Account> accounts = query.getResultList();
-		try {
-			if (!accounts.isEmpty()) {
-				for (int i = 0; i < accounts.size(); i++) {
-					manager.getTransaction().begin();
-					manager.remove(accounts.get(i));
-					manager.getTransaction().commit();
-				}
-				status = true;
-			}
-
-		} catch (IllegalStateException e) {
-			manager.getTransaction().rollback();
-		} finally {
-			manager.close();
-		}
-
-		return status;
-
-	}
 
 }
