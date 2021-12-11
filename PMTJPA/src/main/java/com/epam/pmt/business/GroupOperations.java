@@ -9,7 +9,6 @@ import javax.persistence.EntityManagerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.epam.pmt.dao.AccountDao;
 import com.epam.pmt.dao.GroupDao;
 import com.epam.pmt.entities.Account;
 import com.epam.pmt.entities.Master;
@@ -21,9 +20,8 @@ public class GroupOperations {
 	SingletonEntityManagerFactory singletonEntityManagerFactory;
 	EntityManagerFactory factory;
 	EntityManager manager;
-	@Autowired
-	MasterProvider masterProvider;
-	Master master = masterProvider.getMaster();
+
+	Master master = MasterProvider.getMaster();
 	public boolean checkIfGroupExists(String groupname) {		
 		boolean status=false;
 		factory = singletonEntityManagerFactory.getEntityManagerFactory();

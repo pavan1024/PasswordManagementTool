@@ -21,9 +21,8 @@ public class GroupDaoImpl implements GroupDao {
 	EntityManager manager;
 	@Autowired
 	SingletonEntityManagerFactory singletonEntityManagerFactory;
-	@Autowired
-	MasterProvider masterProvider;
-	Master master = masterProvider.getMaster();
+
+	Master master = MasterProvider.getMaster();
 	@Override
 	public List<Account> displayByGroup(String groupname) {
 		List<Account> groupAccounts = null;

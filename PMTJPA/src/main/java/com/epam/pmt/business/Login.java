@@ -15,8 +15,6 @@ public class Login {
 	MasterOperations masterOperations;
 	@Autowired
 	SingletonEntityManagerFactory singletonEntityManagerFactory;
-	@Autowired
-	MasterProvider masterProvider;
 	EntityManagerFactory factory;
 	EntityManager manager;
 
@@ -25,7 +23,7 @@ public class Login {
 		factory = singletonEntityManagerFactory.getEntityManagerFactory();
 		manager = factory.createEntityManager();
 		if (password.equals(manager.find(Master.class, userName).getPassword())) {
-			masterProvider.setMaster(userName, password);
+			MasterProvider.setMaster(userName, password);
 			status = true;
 		}
 		return status;

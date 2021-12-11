@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Query;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,9 +19,7 @@ public class AccountOperations {
 	AccountDao accountDao;
 	@Autowired
 	SingletonEntityManagerFactory singletonEntityManagerFactory;
-	@Autowired
-	MasterProvider masterProvider;
-	Master master = masterProvider.getMaster();
+	Master master = MasterProvider.getMaster();
 	EntityManagerFactory factory;
 	EntityManager manager;
 	

@@ -21,9 +21,7 @@ public class AccountDaoImpl implements AccountDao{
 	EntityManager manager;
 	@Autowired
 	SingletonEntityManagerFactory singletonEntityManagerFactory;
-	@Autowired
-	MasterProvider masterProvider;
-	Master master = masterProvider.getMaster();
+	Master master = MasterProvider.getMaster();
 
 	String jpqlQuery= "select a from Account a where a.url=?1 and a.master=?2";
 	
