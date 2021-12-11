@@ -21,15 +21,19 @@ public class AccountDaoImpl implements AccountDao{
 	EntityManager manager;
 	@Autowired
 	SingletonEntityManagerFactory singletonEntityManagerFactory;
+	@Autowired
+	MasterProvider masterProvider;
+	Master master = masterProvider.getMaster();
 
 	String jpqlQuery= "select a from Account a where a.url=?1 and a.master=?2";
+	
+	
 	@Override
 	public boolean createAccount(Account account) {
 		boolean status = false;
 		factory = singletonEntityManagerFactory.getEntityManagerFactory();
 		manager = factory.createEntityManager();
-		List<Account> list = manager.find(Master.class, MasterProvider.getMaster().getUsername()).getAccounts();
-		Master master = MasterProvider.getMaster();
+		List<Account> list = manager.find(Master.class, master.getUsername()).getAccounts();
 		list.add(account);
 		master.setAccounts(list);
 		try {
@@ -46,26 +50,40 @@ public class AccountDaoImpl implements AccountDao{
 
 	}
 	
-
+	@Override
+	public String readPassword(Account account) {
+		String password="";
+		factory = singletonEntityManagerFactory.getEntityManagerFactory();
+		manager = factory.createEntityManager();
+		Query query = manager.createQuery(jpqlQuery);
+		query.setParameter(1, account.getUrl());
+		query.setParameter(2, master);
+		List<Account> accounts = query.getResultList();
+		try {
+			password = accounts.get(0).getPassword();
+		} catch (IndexOutOfBoundsException | IllegalStateException ex) {
+			manager.getTransaction().rollback();
+		} finally {
+			manager.close();
+		}
+		return password;
+	}
 
 	@Override
-	public boolean deleteAccount(String url) {
+	public boolean deleteAccount(Account account) {
 		boolean status = false;
 		factory = singletonEntityManagerFactory.getEntityManagerFactory();
 		manager = factory.createEntityManager();
 		
 		Query query = manager.createQuery(jpqlQuery);
-		query.setParameter(1, url);
-		query.setParameter(2, MasterProvider.getMaster());
+		query.setParameter(1, account.getUrl());
+		query.setParameter(2, master);
 		List<Account> accounts = query.getResultList();
-		Account account = accounts.get(0);
 		try {
-			if (account != null) {
 				manager.getTransaction().begin();
-				manager.remove(account);
+				manager.remove(accounts.get(0));
 				manager.getTransaction().commit();
 				status = true;
-			}
 		} catch (IllegalStateException e) {
 			manager.getTransaction().rollback();
 
@@ -77,64 +95,45 @@ public class AccountDaoImpl implements AccountDao{
 
 	}
 
+
 	@Override
-	public boolean updateAccountUsername(String url, String newUsername) {
+	public boolean updateAccount(Account account) {
 		boolean status = false;
 		factory = singletonEntityManagerFactory.getEntityManagerFactory();
 		manager = factory.createEntityManager();
-		Master master = MasterProvider.getMaster();
 		Query query = manager.createQuery(jpqlQuery);
-		query.setParameter(1, url);
+		query.setParameter(1, account.getUrl());
 		query.setParameter(2, master);
 		List<Account> accounts = query.getResultList();
+		
 		try {
-
-			if (!accounts.isEmpty()) {
-				accounts.stream().forEach(i -> i.setUserName(newUsername));
-				master.setAccounts(accounts);
-				manager.getTransaction().begin();
-				manager.merge(master);
-				manager.getTransaction().commit();
-				status = true;
-			}
+		if (!accounts.isEmpty()) {
+			manager.getTransaction().begin();
+			manager.merge(master);
+			manager.getTransaction().commit();
+			status = true;
+		}
 		} catch (IllegalStateException e) {
 			manager.getTransaction().rollback();
+
 		} finally {
+
 			manager.close();
 		}
 		return status;
 	}
 	
+	
 	@Override
-	public boolean updateAccountPassword(String url, String newPassword) {
-		boolean status = false;
+	public List<Account> getAll(){
+		List<Account> accounts=null;
 		factory = singletonEntityManagerFactory.getEntityManagerFactory();
 		manager = factory.createEntityManager();
-		Master master = MasterProvider.getMaster();
-		Query query = manager.createQuery(jpqlQuery);
-		query.setParameter(1, url);
-		query.setParameter(2, master);
-		List<Account> accounts = query.getResultList();
-		try {
-
-			if (!accounts.isEmpty()) {
-				accounts.stream().forEach(i -> i.setPassword(newPassword));
-				master.setAccounts(accounts);
-				manager.getTransaction().begin();
-				manager.merge(master);
-				manager.getTransaction().commit();
-				status = true;
-			}
-		} catch (IllegalStateException e) {
-			manager.getTransaction().rollback();
-		} finally {
-			manager.close();
-		}
-		return status;
-	}
-	@Override
-	public String readPassword(Account account) {
-		return account.getPassword();
+		Query query = manager.createQuery("select a from Account a where a.master=?1");
+		query.setParameter(1, master);
+		accounts = query.getResultList();
+		manager.close();
+		return accounts;
 	}
 
 

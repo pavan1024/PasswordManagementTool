@@ -8,13 +8,11 @@ public interface AccountDao {
 
 	public String readPassword(Account account);
 	
-	public boolean deleteAccount(String url);
+	public boolean deleteAccount(Account account);
+	
+	public boolean updateAccount(Account account);
 
-	public boolean updateAccountUsername(String url, String newUsername);
-
-	public boolean updateAccountPassword(String url, String newPassword);
-
-
+	public List<Account> getAll();
 	
 
 

@@ -19,16 +19,16 @@ public class GroupOperations {
 	GroupDao groupDao;
 	@Autowired
 	SingletonEntityManagerFactory singletonEntityManagerFactory;
-	@Autowired
-	MasterProvider masterProvider;
 	EntityManagerFactory factory;
 	EntityManager manager;
-	
+	@Autowired
+	MasterProvider masterProvider;
+	Master master = masterProvider.getMaster();
 	public boolean checkIfGroupExists(String groupname) {		
 		boolean status=false;
 		factory = singletonEntityManagerFactory.getEntityManagerFactory();
 		manager = factory.createEntityManager();
-		List<Account> accounts = manager.find(Master.class, MasterProvider.getMaster().getUsername()).getAccounts();
+		List<Account> accounts = manager.find(Master.class, master.getUsername()).getAccounts();
 		try {
 		List<Account> groupAccounts=accounts.stream().filter(i->i.getGroupname().equals(groupname)).collect(Collectors.toList());
 		if(!groupAccounts.isEmpty())

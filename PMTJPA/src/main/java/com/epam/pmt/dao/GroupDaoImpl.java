@@ -21,6 +21,9 @@ public class GroupDaoImpl implements GroupDao {
 	EntityManager manager;
 	@Autowired
 	SingletonEntityManagerFactory singletonEntityManagerFactory;
+	@Autowired
+	MasterProvider masterProvider;
+	Master master = masterProvider.getMaster();
 	@Override
 	public List<Account> displayByGroup(String groupname) {
 		List<Account> groupAccounts = null;
@@ -43,7 +46,7 @@ public class GroupDaoImpl implements GroupDao {
 		boolean status = false;
 		factory = singletonEntityManagerFactory.getEntityManagerFactory();
 		manager = factory.createEntityManager();
-		Master master = MasterProvider.getMaster();
+		
 		Query query = manager.createQuery("select a from Account a where a.groupname=?1 and a.master=?2");
 		query.setParameter(1, groupname);
 		query.setParameter(2, master);
@@ -70,7 +73,6 @@ public class GroupDaoImpl implements GroupDao {
 		boolean status = false;
 		factory = singletonEntityManagerFactory.getEntityManagerFactory();
 		manager = factory.createEntityManager();
-		Master master = MasterProvider.getMaster();
 		Query query = manager.createQuery("select a from Account a where a.groupname=?1 and a.master=?2");
 		query.setParameter(1, groupname);
 		query.setParameter(2, master);

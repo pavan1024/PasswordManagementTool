@@ -22,6 +22,7 @@ public class AccountOperations {
 	SingletonEntityManagerFactory singletonEntityManagerFactory;
 	@Autowired
 	MasterProvider masterProvider;
+	Master master = masterProvider.getMaster();
 	EntityManagerFactory factory;
 	EntityManager manager;
 	
@@ -37,22 +38,8 @@ public class AccountOperations {
 	
 	
 	public String readPassword(String url) {
-		String password="";
-		factory = singletonEntityManagerFactory.getEntityManagerFactory();
-		manager = factory.createEntityManager();
-		Master master = MasterProvider.getMaster();
-		Query query = manager.createQuery("select a from Account a where a.url=?1 and a.master=?2");
-		query.setParameter(1, url);
-		query.setParameter(2, master);
-		List<Account> accounts = query.getResultList();
-		try {
-			password = accountDao.readPassword(accounts.get(0));
-		} catch (IndexOutOfBoundsException | IllegalStateException ex) {
-			manager.getTransaction().rollback();
-		} finally {
-			manager.close();
-		}
-		return password;
+		List<Account> accounts=accountDao.getAll().stream().filter(i->i.getUrl().equals(url)).collect(Collectors.toList());
+		return accountDao.readPassword(accounts.get(0));
 	}
 	
 	public boolean checkUrl(String url) {
@@ -75,18 +62,24 @@ public class AccountOperations {
 	
 	
 	public boolean deleteAccount(String url) {
-		return accountDao.deleteAccount(url);
+		List<Account> accounts=accountDao.getAll().stream().filter(i->i.getUrl().equals(url)).collect(Collectors.toList());
+		return accountDao.deleteAccount(accounts.get(0));
 	}
 	
 
 	public boolean updateUsername(String url, String newUsername) {
-		
-		return this.accountDao.updateAccountUsername(url, newUsername);
+		List<Account> accounts=accountDao.getAll().stream().filter(i->i.getUrl().equals(url)).collect(Collectors.toList());
+		accounts.stream().forEach(i->i.setUserName(newUsername));
+		master.setAccounts(accounts);
+		return this.accountDao.updateAccount(accounts.get(0));
 
 	}
 
 	public boolean updatePassword(String url, String newPassword) {
-		return this.accountDao.updateAccountPassword(url, newPassword);
+		List<Account> accounts=accountDao.getAll().stream().filter(i->i.getUrl().equals(url)).collect(Collectors.toList());
+		accounts.stream().forEach(i->i.setPassword(newPassword));
+		master.setAccounts(accounts);
+		return this.accountDao.updateAccount(accounts.get(0));
 
 	}
 }
