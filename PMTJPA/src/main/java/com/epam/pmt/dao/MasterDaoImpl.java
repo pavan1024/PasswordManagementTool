@@ -21,16 +21,12 @@ public class MasterDaoImpl implements MasterDao {
 	@Autowired
 	SingletonFactory singletonFactory;
 	
-	public boolean createMaster(String username, String password) {
+	public boolean createMaster(Master master) {
 		boolean status = false;
 		factory = singletonFactory.getEntityManagerFactory();
 		manager = factory.createEntityManager();
-		Master master = new Master();
-		master.setUsername(username);
-		master.setPassword(password);
 		List<Account> accounts = new ArrayList<>();
 		master.setAccounts(accounts);
-
 		try {
 			manager.getTransaction().begin();
 			manager.merge(master);

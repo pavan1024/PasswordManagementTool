@@ -24,9 +24,12 @@ public class MasterOperations {
 		EntityManagerFactory factory;
 		EntityManager manager;
 
-	public boolean createMaster(String userName, String password) {
+	public boolean createMaster(String username, String password) {
 		boolean status = false;
-		status = masterDao.createMaster(userName, password);
+		Master master = new Master();
+		master.setUsername(username);
+		master.setPassword(password);
+		status = masterDao.createMaster(master);
 		return status;
 
 	}
