@@ -14,7 +14,7 @@ import com.epam.pmt.entities.Account;
 import com.epam.pmt.entities.Master;
 
 @Component
-public class AccountOperations {
+public class AccountService {
 	@Autowired
 	AccountDao accountDao;
 	@Autowired

@@ -7,7 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.epam.pmt.business.AccountOperations;
+import com.epam.pmt.business.AccountService;
 import com.epam.pmt.business.Validation;
 import com.epam.pmt.ui.UpdateAccountUI;
 
@@ -15,7 +15,7 @@ import com.epam.pmt.ui.UpdateAccountUI;
 public class UpdateAccountUI {
 	private static final Logger LOGGER = LogManager.getLogger(UpdateAccountUI.class);
 	@Autowired
-	AccountOperations accountOperations;
+	AccountService accountService;
 	@Autowired
 	Validation validation;
 	static Scanner input = new Scanner(System.in);
@@ -32,7 +32,7 @@ public class UpdateAccountUI {
 	}
 
 	private void usersChoice(String choice, String url) {
-		boolean found = accountOperations.checkUrl(url);
+		boolean found = accountService.checkUrl(url);
 		switch (choice) {
 		case "1":
 			if (found) {
@@ -57,7 +57,7 @@ public class UpdateAccountUI {
 		LOGGER.info("Enter New Username ");
 		String newUsername = input.nextLine();
 
-		accountOperations.updateUsername(url, newUsername);
+		accountService.updateUsername(url, newUsername);
 		LOGGER.info("Username Updated Successfully.........!!!!!!");
 	}
 
@@ -65,7 +65,7 @@ public class UpdateAccountUI {
 		LOGGER.info("Enter New Password ");
 		String newPassword = input.nextLine();
 		if (validation.isValidPassword(newPassword)) {
-			accountOperations.updatePassword(url, newPassword);
+			accountService.updatePassword(url, newPassword);
 			LOGGER.info("Password Updated Successfully........!!!!!!!!!!! ");
 		} else
 			LOGGER.info("Enter the password with atleat 1 UpperCase, 1 LowerCase , 1 Number, 1 Special Character");

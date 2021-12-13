@@ -41,13 +41,13 @@ public class GroupDaoImpl implements GroupDao {
 	}
 
 	@Override
-	public boolean modifyGroup(String groupname, String newGroupname) {
+	public boolean modifyGroup(String currentGroupname, String newGroupname) {
 		boolean status = false;
 		factory = singletonFactory.getEntityManagerFactory();
 		manager = factory.createEntityManager();
 		
 		Query query = manager.createQuery("select a from Account a where a.groupname=?1 and a.master=?2");
-		query.setParameter(1, groupname);
+		query.setParameter(1, currentGroupname);
 		query.setParameter(2, master);
 		List<Account> accounts = query.getResultList();
 

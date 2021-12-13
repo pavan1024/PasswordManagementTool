@@ -5,13 +5,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import com.epam.pmt.business.MasterOperations;
+import com.epam.pmt.business.MasterService;
 
 
 @Component
 public class RegisterUI {
 	@Autowired
-	MasterOperations masterOperations;
+	MasterService masterService;
 	private static final Logger LOGGER = LogManager.getLogger(RegisterUI.class);
 
 	public void register() {
@@ -23,7 +23,7 @@ public class RegisterUI {
 		LOGGER.info("(Note) : Password Should be atleast 1 UpperCase, 1 LowerCase , 1 Number, 1 Special Character");
 		String password = input.next();
 
-		boolean registered = masterOperations.registerAccount(username, password);
+		boolean registered = masterService.registerAccount(username, password);
 		if (registered) {
 			LOGGER.info("Account Registered Successfully......!!!!!!!!!!!!");
 		} else {

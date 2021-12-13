@@ -8,14 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.epam.pmt.ui.CreateAccountUI;
-import com.epam.pmt.business.AccountOperations;
+import com.epam.pmt.business.AccountService;
 import com.epam.pmt.business.Validation;
 
 @Component
 public class CreateAccountUI {
 	private static final Logger LOGGER = LogManager.getLogger(CreateAccountUI.class);
 	@Autowired
-	AccountOperations accountOperations;
+	AccountService accountService;
 	@Autowired
 	Validation validation;
 
@@ -37,7 +37,7 @@ public class CreateAccountUI {
 				LOGGER.info("Enter Group Name ");
 				String groupname = input.nextLine();
 				
-				if(accountOperations.createAccount(url, username, password, groupname))
+				if(accountService.createAccount(url, username, password, groupname))
 					LOGGER.info("Account Added Succesfully...........!!!!!!!");
 				else
 					LOGGER.info("Account Already Exists...........!!!!!!!");

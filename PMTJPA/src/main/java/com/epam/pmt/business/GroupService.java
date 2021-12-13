@@ -13,7 +13,7 @@ import com.epam.pmt.dao.GroupDao;
 import com.epam.pmt.entities.Account;
 import com.epam.pmt.entities.Master;
 @Component
-public class GroupOperations {
+public class GroupService {
 	@Autowired
 	GroupDao groupDao;
 	@Autowired

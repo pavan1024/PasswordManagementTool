@@ -7,14 +7,14 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.epam.pmt.business.AccountOperations;
+import com.epam.pmt.business.AccountService;
 import com.epam.pmt.ui.ReadPasswordUI;
 
 @Component
 public class ReadPasswordUI {
 	private static final Logger LOGGER = LogManager.getLogger(ReadPasswordUI.class);
 	@Autowired
-	AccountOperations accountOperations;
+	AccountService accountService;
 
 	public void displayAccountPassword() {
 
@@ -27,8 +27,8 @@ public class ReadPasswordUI {
 
 	private void displaypassword(String url) {
 		try {
-			if (!accountOperations.readPassword(url).equals("")) {
-				String password = accountOperations.readPassword(url);
+			if (!accountService.readPassword(url).equals("")) {
+				String password = accountService.readPassword(url);
 				if(password!=null)
 					LOGGER.info("Account Password : {}" , password);
 			}

@@ -8,8 +8,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.epam.pmt.business.AccountOperations;
-import com.epam.pmt.business.GroupOperations;
+import com.epam.pmt.business.AccountService;
+import com.epam.pmt.business.GroupService;
 import com.epam.pmt.entities.Account;
 import com.epam.pmt.ui.DisplayGroupUI;
 
@@ -17,9 +17,9 @@ import com.epam.pmt.ui.DisplayGroupUI;
 public class DisplayGroupUI {
 	private static final Logger LOGGER = LogManager.getLogger(DisplayGroupUI.class);
 	@Autowired
-	AccountOperations accountOperations;
+	AccountService accountService;
 	@Autowired
-	GroupOperations groupOperations;
+	GroupService groupService;
 
 	public void displayGroupAccountDetails() {
 		@SuppressWarnings("resource")
@@ -27,8 +27,8 @@ public class DisplayGroupUI {
 		LOGGER.info("Enter the Groupname ");
 		String groupname = input.nextLine();
 
-		if (groupOperations.checkIfGroupExists(groupname)) {
-			List<Account> accounts = groupOperations.groupDetails(groupname);
+		if (groupService.checkIfGroupExists(groupname)) {
+			List<Account> accounts = groupService.groupDetails(groupname);
 			for(Account account : accounts) {
 				LOGGER.info("Account URL : {}",account.getUrl());
 				LOGGER.info("Account Username : {}",account.getUserName());

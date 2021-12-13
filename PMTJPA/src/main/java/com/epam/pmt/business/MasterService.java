@@ -10,7 +10,7 @@ import com.epam.pmt.dao.MasterDao;
 import com.epam.pmt.entities.Master;
 
 @Component
-public class MasterOperations {
+public class MasterService {
 	@Autowired
 	MasterDao masterDao;
 	@Autowired
