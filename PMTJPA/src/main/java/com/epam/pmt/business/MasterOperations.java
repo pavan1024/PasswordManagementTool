@@ -1,8 +1,5 @@
 package com.epam.pmt.business;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
@@ -10,19 +7,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.epam.pmt.dao.MasterDao;
-import com.epam.pmt.entities.Account;
 import com.epam.pmt.entities.Master;
 
 @Component
 public class MasterOperations {
-		@Autowired
-		MasterDao masterDao;
-		@Autowired
-		SingletonFactory singletonFactory;
-		@Autowired
-		Validation validation;
-		EntityManagerFactory factory;
-		EntityManager manager;
+	@Autowired
+	MasterDao masterDao;
+	@Autowired
+	SingletonFactory singletonFactory;
+	@Autowired
+	Validation validation;
+	EntityManagerFactory factory;
+	EntityManager manager;
 
 	public boolean createMaster(String username, String password) {
 		boolean status = false;
@@ -48,8 +44,7 @@ public class MasterOperations {
 		}
 		return status;
 	}
-	
-	
+
 	public boolean login(String username, String password) {
 		boolean status = false;
 		factory = singletonFactory.getEntityManagerFactory();
@@ -60,7 +55,6 @@ public class MasterOperations {
 		}
 		return status;
 	}
-	
 
 	public boolean registerAccount(String username, String password) {
 		boolean status = false;

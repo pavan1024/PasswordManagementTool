@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import com.epam.pmt.business.SingletonFactory;
 import com.epam.pmt.entities.Account;
 import com.epam.pmt.entities.Master;
+
 @Component
 @Primary
 public class MasterDaoImpl implements MasterDao {
@@ -20,7 +21,7 @@ public class MasterDaoImpl implements MasterDao {
 	EntityManager manager;
 	@Autowired
 	SingletonFactory singletonFactory;
-	
+
 	public boolean createMaster(Master master) {
 		boolean status = false;
 		factory = singletonFactory.getEntityManagerFactory();
@@ -33,9 +34,9 @@ public class MasterDaoImpl implements MasterDao {
 			manager.getTransaction().commit();
 			status = true;
 		} catch (IllegalStateException e) {
-				manager.getTransaction().rollback();
+			manager.getTransaction().rollback();
 		} finally {
-				manager.close();
+			manager.close();
 		}
 
 		return status;
