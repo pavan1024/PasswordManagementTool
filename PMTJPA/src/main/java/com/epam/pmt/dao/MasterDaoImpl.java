@@ -7,25 +7,26 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
-import com.epam.pmt.business.SingletonEntityManagerFactory;
+import com.epam.pmt.business.SingletonFactory;
 import com.epam.pmt.entities.Account;
 import com.epam.pmt.entities.Master;
-
 @Component
-public class MasterOperations {
-		@Autowired
-		SingletonEntityManagerFactory singletonEntityManagerFactory;
-		EntityManagerFactory factory;
-		EntityManager manager;
-
-	public boolean createMaster(String userName, String password) {
+@Primary
+public class MasterDaoImpl implements MasterDao {
+	EntityManagerFactory factory;
+	EntityManager manager;
+	@Autowired
+	SingletonFactory singletonFactory;
+	
+	public boolean createMaster(String username, String password) {
 		boolean status = false;
-		factory = singletonEntityManagerFactory.getEntityManagerFactory();
+		factory = singletonFactory.getEntityManagerFactory();
 		manager = factory.createEntityManager();
 		Master master = new Master();
-		master.setUsername(userName);
+		master.setUsername(username);
 		master.setPassword(password);
 		List<Account> accounts = new ArrayList<>();
 		master.setAccounts(accounts);
@@ -44,20 +45,4 @@ public class MasterOperations {
 		return status;
 
 	}
-
-	public boolean checkIfMasterExists(String userName) {
-		boolean status = false;
-		factory = singletonEntityManagerFactory.getEntityManagerFactory();
-		manager = factory.createEntityManager();
-		try {
-			Master account = manager.find(Master.class, userName);
-			if (account.getUsername().equals(userName)) {
-				status = true;
-			}
-		} catch (Exception e) {
-			e.getStackTrace();
-		}
-		return status;
-	}
-
 }

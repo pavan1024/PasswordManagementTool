@@ -17,14 +17,14 @@ public class GroupOperations {
 	@Autowired
 	GroupDao groupDao;
 	@Autowired
-	SingletonEntityManagerFactory singletonEntityManagerFactory;
+	SingletonFactory singletonFactory;
 	EntityManagerFactory factory;
 	EntityManager manager;
 
 	Master master = MasterProvider.getMaster();
 	public boolean checkIfGroupExists(String groupname) {		
 		boolean status=false;
-		factory = singletonEntityManagerFactory.getEntityManagerFactory();
+		factory = singletonFactory.getEntityManagerFactory();
 		manager = factory.createEntityManager();
 		List<Account> accounts = manager.find(Master.class, master.getUsername()).getAccounts();
 		try {

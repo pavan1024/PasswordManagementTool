@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 import com.epam.pmt.business.MasterProvider;
-import com.epam.pmt.business.SingletonEntityManagerFactory;
+import com.epam.pmt.business.SingletonFactory;
 import com.epam.pmt.entities.Account;
 import com.epam.pmt.entities.Master;
 @Component
@@ -20,13 +20,13 @@ public class GroupDaoImpl implements GroupDao {
 	EntityManagerFactory factory;
 	EntityManager manager;
 	@Autowired
-	SingletonEntityManagerFactory singletonEntityManagerFactory;
+	SingletonFactory singletonFactory;
 
 	Master master = MasterProvider.getMaster();
 	@Override
 	public List<Account> displayByGroup(String groupname) {
 		List<Account> groupAccounts = null;
-		factory = singletonEntityManagerFactory.getEntityManagerFactory();
+		factory = singletonFactory.getEntityManagerFactory();
 		manager = factory.createEntityManager();
 		try {
 			Query query = manager.createQuery("select u from Account u where u.groupname=?1");
@@ -43,7 +43,7 @@ public class GroupDaoImpl implements GroupDao {
 	@Override
 	public boolean modifyGroup(String groupname, String newGroupname) {
 		boolean status = false;
-		factory = singletonEntityManagerFactory.getEntityManagerFactory();
+		factory = singletonFactory.getEntityManagerFactory();
 		manager = factory.createEntityManager();
 		
 		Query query = manager.createQuery("select a from Account a where a.groupname=?1 and a.master=?2");
@@ -70,7 +70,7 @@ public class GroupDaoImpl implements GroupDao {
 	@Override
 	public boolean deleteGroup(String groupname) {
 		boolean status = false;
-		factory = singletonEntityManagerFactory.getEntityManagerFactory();
+		factory = singletonFactory.getEntityManagerFactory();
 		manager = factory.createEntityManager();
 		Query query = manager.createQuery("select a from Account a where a.groupname=?1 and a.master=?2");
 		query.setParameter(1, groupname);

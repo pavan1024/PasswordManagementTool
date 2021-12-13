@@ -5,10 +5,10 @@ import javax.persistence.Persistence;
 
 import org.springframework.stereotype.Component;
 @Component
-public class SingletonEntityManagerFactory {
+public class SingletonFactory {
 	EntityManagerFactory entityManagerFactory;
 
-	private SingletonEntityManagerFactory() {
+	private SingletonFactory() {
 	}
 
 	public EntityManagerFactory getEntityManagerFactory() {

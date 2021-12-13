@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 import com.epam.pmt.business.MasterProvider;
-import com.epam.pmt.business.SingletonEntityManagerFactory;
+import com.epam.pmt.business.SingletonFactory;
 import com.epam.pmt.entities.*;
 
 @Component
@@ -20,7 +20,7 @@ public class AccountDaoImpl implements AccountDao{
 	EntityManagerFactory factory;
 	EntityManager manager;
 	@Autowired
-	SingletonEntityManagerFactory singletonEntityManagerFactory;
+	SingletonFactory singletonFactory;
 	Master master = MasterProvider.getMaster();
 
 	String jpqlQuery= "select a from Account a where a.url=?1 and a.master=?2";
@@ -29,7 +29,7 @@ public class AccountDaoImpl implements AccountDao{
 	@Override
 	public boolean createAccount(Account account) {
 		boolean status = false;
-		factory = singletonEntityManagerFactory.getEntityManagerFactory();
+		factory = singletonFactory.getEntityManagerFactory();
 		manager = factory.createEntityManager();
 		List<Account> list = manager.find(Master.class, master.getUsername()).getAccounts();
 		list.add(account);
@@ -51,7 +51,7 @@ public class AccountDaoImpl implements AccountDao{
 	@Override
 	public String readPassword(Account account) {
 		String password="";
-		factory = singletonEntityManagerFactory.getEntityManagerFactory();
+		factory = singletonFactory.getEntityManagerFactory();
 		manager = factory.createEntityManager();
 		Query query = manager.createQuery(jpqlQuery);
 		query.setParameter(1, account.getUrl());
@@ -70,7 +70,7 @@ public class AccountDaoImpl implements AccountDao{
 	@Override
 	public boolean deleteAccount(Account account) {
 		boolean status = false;
-		factory = singletonEntityManagerFactory.getEntityManagerFactory();
+		factory = singletonFactory.getEntityManagerFactory();
 		manager = factory.createEntityManager();
 		
 		Query query = manager.createQuery(jpqlQuery);
@@ -97,7 +97,7 @@ public class AccountDaoImpl implements AccountDao{
 	@Override
 	public boolean updateAccount(Account account) {
 		boolean status = false;
-		factory = singletonEntityManagerFactory.getEntityManagerFactory();
+		factory = singletonFactory.getEntityManagerFactory();
 		manager = factory.createEntityManager();
 		Query query = manager.createQuery(jpqlQuery);
 		query.setParameter(1, account.getUrl());
@@ -125,7 +125,7 @@ public class AccountDaoImpl implements AccountDao{
 	@Override
 	public List<Account> getAll(){
 		List<Account> accounts=null;
-		factory = singletonEntityManagerFactory.getEntityManagerFactory();
+		factory = singletonFactory.getEntityManagerFactory();
 		manager = factory.createEntityManager();
 		Query query = manager.createQuery("select a from Account a where a.master=?1");
 		query.setParameter(1, master);

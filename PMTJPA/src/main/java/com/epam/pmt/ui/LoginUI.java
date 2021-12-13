@@ -6,15 +6,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import com.epam.pmt.business.Login;
+import com.epam.pmt.business.MasterOperations;
 
 @Component
 public class LoginUI {
 
 	private static final Logger LOGGER = LogManager.getLogger(LoginUI.class);
 	@Autowired
-	Login login;
+	MasterOperations masterOperations;
 	@Autowired
 	Menu menu;
 
@@ -24,10 +23,10 @@ public class LoginUI {
 		boolean status = false;
 		LOGGER.info("Enter your Username ");
 		String username = input.nextLine();
-		if (login.checkIfUserNameExists(username)) {
+		if (masterOperations.checkIfMasterExists(username)) {
 			LOGGER.info("Enter your Password ");
 			String password = input.nextLine();
-			status = login.login(username, password);
+			status = masterOperations.login(username, password);
 			this.verify(status);
 		}
 

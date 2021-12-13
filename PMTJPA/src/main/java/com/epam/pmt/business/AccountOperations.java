@@ -18,7 +18,7 @@ public class AccountOperations {
 	@Autowired
 	AccountDao accountDao;
 	@Autowired
-	SingletonEntityManagerFactory singletonEntityManagerFactory;
+	SingletonFactory singletonFactory;
 	Master master = MasterProvider.getMaster();
 	EntityManagerFactory factory;
 	EntityManager manager;
@@ -41,7 +41,7 @@ public class AccountOperations {
 	
 	public boolean checkUrl(String url) {
 		boolean status = false;
-		factory = singletonEntityManagerFactory.getEntityManagerFactory();
+		factory = singletonFactory.getEntityManagerFactory();
 		manager = factory.createEntityManager();	
 		Account account=manager.find(Account.class, url);
 		try {

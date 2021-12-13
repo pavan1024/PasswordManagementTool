@@ -28,8 +28,9 @@ public class ReadPasswordUI {
 	private void displaypassword(String url) {
 		try {
 			if (!accountOperations.readPassword(url).equals("")) {
-				if(accountOperations.readPassword(url)!=null)
-					LOGGER.info("Account Password : {}" ,accountOperations.readPassword(url));
+				String password = accountOperations.readPassword(url);
+				if(password!=null)
+					LOGGER.info("Account Password : {}" , password);
 			}
 			else
 				LOGGER.info("URL not found");
