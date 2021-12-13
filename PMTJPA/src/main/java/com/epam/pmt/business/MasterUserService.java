@@ -8,9 +8,10 @@ import org.springframework.stereotype.Component;
 
 import com.epam.pmt.dao.MasterDao;
 import com.epam.pmt.entities.Master;
+import com.epam.pmt.factory.SingletonFactory;
 
 @Component
-public class MasterService {
+public class MasterUserService {
 	@Autowired
 	MasterDao masterDao;
 	@Autowired

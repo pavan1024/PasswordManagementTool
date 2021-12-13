@@ -1,4 +1,4 @@
-package com.epam.pmt.factoryclasses;
+package com.epam.pmt.factory;
 
 import java.util.HashMap;
 

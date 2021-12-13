@@ -1,4 +1,4 @@
-package com.epam.pmt.factoryclasses;
+package com.epam.pmt.factory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

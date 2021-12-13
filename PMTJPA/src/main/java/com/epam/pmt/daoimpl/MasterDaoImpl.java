@@ -1,4 +1,4 @@
-package com.epam.pmt.dao;
+package com.epam.pmt.daoimpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,9 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
-import com.epam.pmt.business.SingletonFactory;
+import com.epam.pmt.dao.MasterDao;
 import com.epam.pmt.entities.Account;
 import com.epam.pmt.entities.Master;
+import com.epam.pmt.factory.SingletonFactory;
 
 @Component
 @Primary

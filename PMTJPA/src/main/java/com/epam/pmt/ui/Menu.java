@@ -10,7 +10,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.epam.pmt.factoryclasses.*;
+import com.epam.pmt.factory.*;
 
 @Component
 public class Menu {

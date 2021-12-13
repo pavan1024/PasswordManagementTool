@@ -1,4 +1,4 @@
-package com.epam.pmt.dao;
+package com.epam.pmt.daoimpl;
 
 import java.util.List;
 
@@ -11,9 +11,10 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 import com.epam.pmt.business.MasterProvider;
-import com.epam.pmt.business.SingletonFactory;
+import com.epam.pmt.dao.GroupDao;
 import com.epam.pmt.entities.Account;
 import com.epam.pmt.entities.Master;
+import com.epam.pmt.factory.SingletonFactory;
 @Component
 @Primary
 public class GroupDaoImpl implements GroupDao {

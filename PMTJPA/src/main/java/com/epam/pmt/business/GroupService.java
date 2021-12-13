@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import com.epam.pmt.dao.GroupDao;
 import com.epam.pmt.entities.Account;
 import com.epam.pmt.entities.Master;
+import com.epam.pmt.factory.SingletonFactory;
 @Component
 public class GroupService {
 	@Autowired
